@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <link rel="icon" href="new_UI/img/logo.png">
-  <title>Login | Loan Management System</title>
+  <title>Login | LMS</title>
  	
 
 <?php include('./header.php'); ?>
@@ -24,7 +24,7 @@ header("location:index.php?page=home");
 
 
   <main id="main">
-  	<h1>Loan Management System</h1>
+  	<h1>LMS</h1>
 
 	<div id="login-body">
 		<div class="card">
@@ -48,7 +48,7 @@ header("location:index.php?page=home");
 		</div>
 	</div>
 
-	<footer>All rights reserved &copy; 2023 | Designed & Developed By Happy Kumar</footer>
+	<footer>All rights reserved &copy; 2024 | Managed By Zambo Impact Technologies</footer>
   </main>
 
 

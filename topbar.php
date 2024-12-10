@@ -5,7 +5,7 @@
 <nav class="navbar">
   <div class="logo">
     <a href="index.php?page=home"><img src="new_UI/img/logo.png" alt="logo"></a>
-    <h4 class="title">Loan Management System</h4>
+    <h4 class="title">LMS</h4>
   </div>
 
   <div class="ham" id="hamburger">  

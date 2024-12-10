@@ -7,6 +7,10 @@
 <div class="col-lg-12">
 	<div class="card">
 		<div class="card-header" style="color: white !important;">
+		<large class="card-title">
+				<b>Loan List</b>
+				<button class="btn btn-primary btn-sm btn-block col-md-2 float-right" type="button" id=""><i class="fa fa-plus" style="width: 20px;"></i>Loan Request</button>
+			</large>
 			<large class="card-title">
 				<b>Loan List</b>
 				<button class="btn btn-primary btn-sm btn-block col-md-2 float-right" type="button" id="new_application"><i class="fa fa-plus" style="width: 20px;"></i> New Loan Application</button>
