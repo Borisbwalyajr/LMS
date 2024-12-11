@@ -157,6 +157,36 @@ CREATE TABLE `payments` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
+--
+-- Table structure for `registration`
+--
+CREATE TABLE registrations (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    full_name VARCHAR(255) NOT NULL,
+    dob DATE NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    mobile_number VARCHAR(15) NOT NULL,
+    gender ENUM('Male', 'Female', 'Others') NOT NULL,
+    occupation VARCHAR(255) NOT NULL,
+    id_type VARCHAR(255) NOT NULL,
+    id_number VARCHAR(50) NOT NULL,
+    issued_authority VARCHAR(255) NOT NULL,
+    id_front_path VARCHAR(255) NOT NULL,
+    id_back_path VARCHAR(255) NOT NULL,
+    portrait_photo_path VARCHAR(255) NOT NULL,
+    address_type VARCHAR(255) NOT NULL,
+    nationality VARCHAR(255) NOT NULL,
+    province VARCHAR(255) NOT NULL,
+    district VARCHAR(255) NOT NULL,
+    house_number VARCHAR(50) NOT NULL,
+    area VARCHAR(255) NOT NULL,
+    next_of_kin1_relationship VARCHAR(50) NOT NULL,
+    next_of_kin1_name VARCHAR(255) NOT NULL,
+    next_of_kin1_phone VARCHAR(15) NOT NULL,
+    next_of_kin2_relationship VARCHAR(50) NOT NULL,
+    next_of_kin2_name VARCHAR(255) NOT NULL,
+    next_of_kin2_phone VARCHAR(15) NOT NULL
+);
 
 --
 -- Table structure for table `users`
