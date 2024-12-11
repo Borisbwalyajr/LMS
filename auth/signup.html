@@ -25,27 +25,27 @@
                     <div class="fields">
                         <div class="input-field">
                             <label>Full Name</label>
-                            <input type="text" placeholder="Enter your name" required>
+                            <input type="text" placeholder="Enter your name" name="full_name" required>
                         </div>
 
                         <div class="input-field">
                             <label>Date of Birth</label>
-                            <input type="date" placeholder="Enter birth date" required>
+                            <input type="date" placeholder="Enter birth date" name="dob" required>
                         </div>
 
                         <div class="input-field">
                             <label>Email</label>
-                            <input type="text" placeholder="Enter your email" required>
+                            <input type="email" placeholder="Enter your email" name="email" required>
                         </div>
 
                         <div class="input-field">
                             <label>Mobile Number</label>
-                            <input type="number" placeholder="Enter mobile number" required>
+                            <input type="number" placeholder="Enter mobile number" name="mobile_number" required>
                         </div>
 
                         <div class="input-field">
                             <label>Gender</label>
-                            <select required>
+                            <select required name="gender">
                                 <option disabled selected>Select gender</option>
                                 <option>Male</option>
                                 <option>Female</option>
@@ -55,7 +55,7 @@
 
                         <div class="input-field">
                             <label>Occupation</label>
-                            <input type="text" placeholder="Enter your Occupation" required>
+                            <input type="text" placeholder="Enter your Occupation" name="occupation" required>
                         </div>
                     </div>
                 </div>
@@ -66,32 +66,32 @@
                     <div class="fields">
                         <div class="input-field">
                             <label>ID Type</label>
-                            <input type="text" placeholder="Enter ID type" required>
+                            <input type="text" placeholder="Enter ID type" name="id_type" required>
                         </div>
 
                         <div class="input-field">
                             <label>ID Number</label>
-                            <input type="number" placeholder="Enter ID number" required>
+                            <input type="number" placeholder="Enter ID number" name="id_number" required>
                         </div>
 
                         <div class="input-field">
                             <label>Issued Authority</label>
-                            <input type="text" placeholder="Enter issued authority" required>
+                            <input type="text" placeholder="Enter issued authority" name="issued_authority" required>
                         </div>
 
                         <div class="input-field">
                             <label>ID Front</label>
-                            <input type="file" accept="image/png, image/jpeg, image/jpg, image/gif"   required>
+                            <input type="file" name="id_front" accept="image/png, image/jpeg, image/jpg, image/gif"   required>
                         </div>
 
                         <div class="input-field">
                             <label>ID back</label>
-                            <input type="file" accept="image/png, image/jpeg, image/jpg, image/gif" required>
+                            <input type="file" name="id_back" accept="image/png, image/jpeg, image/jpg, image/gif" required>
                         </div>
 
                         <div class="input-field">
                             <label>Portrain Photo</label>
-                            <input type="file"  accept="image/png, image/jpeg, image/jpg, image/gif" required>
+                            <input type="file" name="portrait_photo" accept="image/png, image/jpeg, image/jpg, image/gif" required>
                         </div>
                     </div>
 
@@ -109,43 +109,43 @@
                     <div class="fields">
                         <div class="input-field">
                             <label>Address Type</label>
-                            <input type="text" placeholder="Permanent or Temporary" required>
+                            <input type="text" name="address_type" placeholder="Permanent or Temporary" required>
                         </div>
 
                         <div class="input-field">
                             <label>Nationality</label>
-                            <input type="text" placeholder="Enter nationality" required>
+                            <input type="text" name="nationality" placeholder="Enter nationality" required>
                         </div>
 
                         <div class="input-field">
                             <label>Province</label>
-                            <input type="text" placeholder="Enter your state" required>
+                            <input type="text" name="province" placeholder="Enter your state" required>
                         </div>
 
                         <div class="input-field">
                             <label>District</label>
-                            <input type="text" placeholder="Enter your district" required>
+                            <input type="text" name="district" placeholder="Enter your district" required>
                         </div>
 
                         <div class="input-field">
                             <label>House Number</label>
-                            <input type="number" placeholder="Enter House number" required>
+                            <input type="number" name="house_number" placeholder="Enter House number" required>
                         </div>
 
                         <div class="input-field">
                             <label>Area</label>
-                            <input type="number" placeholder="Enter Area" required>
+                            <input type="number" name="area" placeholder="Enter Area" required>
                         </div>
                     </div>
                 </div>
 
                 <div class="details family">
-                    <span class="title">Next of Keen Details</span>
+                    <span class="title">Next of Kin Details</span>
                     <!-- Emergency line 1 -->
                     <div class="fields">
                         <div class="input-field">
                             <label>Relationship</label>
-                            <select required>
+                            <select required name="next_of_kin1_relationship">
                                 <option disabled selected>Select Relationship</option>
                                 <option>Father</option>
                                 <option>Mother</option>
@@ -155,17 +155,17 @@
 
                         <div class="input-field">
                             <label>Full Name</label>
-                            <input type="text" placeholder="Enter full name" required>
+                            <input type="text" name="next_of_kin1_name" placeholder="Enter full name" required>
                         </div>
 
                         <div class="input-field">
                             <label>Phone Number</label>
-                            <input type="tel" placeholder="Enter Phone Number" required>
+                            <input type="tel" name="next_of_kin1_phone" placeholder="Enter Phone Number" required>
                         </div>
                         <!-- Emergency line 2 -->
                         <div class="input-field">
                             <label>Relationship</label>
-                            <select required>
+                            <select required name="next_of_kin2_relationship">
                                 <option disabled selected>Select Relationship</option>
                                 <option>Spouce</option>
                                 <option>Workmate</option>
@@ -175,12 +175,12 @@
 
                         <div class="input-field">
                             <label>Full Name</label>
-                            <input type="text" placeholder="Full name" required>
+                            <input type="text" name="next_of_kin2_name" placeholder="Full name" required>
                         </div>
 
                         <div class="input-field">
                             <label>Phone Number</label>
-                            <input type="text" placeholder="Phone Number" required>
+                            <input type="text" name="next_of_kin2_phone" placeholder="Phone Number" required>
                         </div>
                     </div>
 
