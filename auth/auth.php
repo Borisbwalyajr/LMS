@@ -1,9 +1,9 @@
 <?php
 // Database connection
 $host = 'localhost';
-$dbname = 'your_database_name';
-$username = 'your_username';
-$password = 'your_password';
+$dbname = 'loan_db';
+$username = 'root';
+$password = '';
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
