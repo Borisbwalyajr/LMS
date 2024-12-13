@@ -178,14 +178,13 @@ CREATE TABLE registrations (
     nationality VARCHAR(255) NOT NULL,
     province VARCHAR(255) NOT NULL,
     district VARCHAR(255) NOT NULL,
-    house_number VARCHAR(50) NOT NULL,
-    area VARCHAR(255) NOT NULL,
     next_of_kin1_relationship VARCHAR(50) NOT NULL,
     next_of_kin1_name VARCHAR(255) NOT NULL,
     next_of_kin1_phone VARCHAR(15) NOT NULL,
     next_of_kin2_relationship VARCHAR(50) NOT NULL,
     next_of_kin2_name VARCHAR(255) NOT NULL,
-    next_of_kin2_phone VARCHAR(15) NOT NULL
+    next_of_kin2_phone VARCHAR(15) NOT NULL,
+    password varchar(255) NOT NULL
 );
 
 --
