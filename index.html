@@ -31,11 +31,11 @@
         <div class="form-content">
           <div class="login-form">
             <div class="title">Login</div>
-          <form action="#">
+          <form action="./login.php" method="post">
             <div class="input-boxes">
               <div class="input-box">
                 <i class="fas fa-id-card-alt"></i>
-                <input type="text" placeholder="Enter your NRC" required>
+                <input type="text" placeholder="Enter a valid NRC (e.g., 123456/12/1)" pattern="\d{6}/\d{2}/\d{1}" required>
               </div>
               <div class="input-box">
                 <i class="fas fa-lock"></i>
@@ -43,7 +43,7 @@
               </div>
               <div class="text"><a href="#">Forgot password?</a></div>
               <div class="button input-box">
-                <input type="submit" value="Sumbit">
+                <input type="submit" value="Submit" name="login">
               </div>
               <div class="text sign-up-text">Have a reference code? <label for="flip">Authenticate</label></div>
               <div class="text sign-up-text">Don't have an account? <label for="flip"><a href="./auth/signup.html" class="link">Sigup now</a> </label></div>

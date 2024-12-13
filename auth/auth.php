@@ -1,17 +1,5 @@
 <?php
-// Database connection
-$host = 'localhost';
-$dbname = 'loan_db';
-$username = 'root';
-$password = '';
-
-try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    die("Database connection failed: " . $e->getMessage());
-}
-
+include_once("../connection.php");
 // File upload directory
 $uploadDir = 'uploads/';
 if (!file_exists($uploadDir)) {
@@ -57,43 +45,61 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         else
         {
-            $password = md5($password);
-
-             // Handle file uploads
-            $idFrontPath = $uploadDir . basename($_FILES['id_front']['name']);
-            $idBackPath = $uploadDir . basename($_FILES['id_back']['name']);
-            $portraitPhotoPath = $uploadDir . basename($_FILES['portrait_photo']['name']);
-
-            if (!move_uploaded_file($_FILES['id_front']['tmp_name'], $idFrontPath) ||
-                !move_uploaded_file($_FILES['id_back']['tmp_name'], $idBackPath) ||
-                !move_uploaded_file($_FILES['portrait_photo']['tmp_name'], $portraitPhotoPath)) {
-                throw new Exception("Failed to upload files.");
-            }
-
-            // Insert into database
-            $stmt = $pdo->prepare("INSERT INTO registrations (
-                full_name, dob, email, mobile_number, gender, occupation, id_type, id_number, issued_authority, 
-                id_front_path, id_back_path, portrait_photo_path, address_type, nationality, province, district, 
-                next_of_kin1_relationship, next_of_kin1_name, next_of_kin1_phone, 
-                next_of_kin2_relationship, next_of_kin2_name, next_of_kin2_phone,password
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            // check if user already exists
+            $chk = $pdo->prepare("SELECT COUNT(*) AS possible from registrations where id_number = ? ");
             
-            $stmt->execute([
-                $fullName, $dob, $email, $mobileNumber, $gender, $occupation, $idType, $idNumber, $issuedAuthority, 
-                $idFrontPath, $idBackPath, $portraitPhotoPath, $addressType, $nationality, $province, $district, 
-                $kin1Relationship, $kin1Name, $kin1Phone, $kin2Relationship, $kin2Name, $kin2Phone,$password
-            ]);
+            $chk->execute([$idNumber]);
+            $row = $chk->fetch(PDO::FETCH_ASSOC);
+            $possible = $row['possible']; // Number of matching rows
 
-            echo(
-                "
-                <script>
-                    alert('You have successfully been Registered');
-                    window.location.href='../index.html';
-                </script>
-                "
-            );
+            if ($possible > 0) {
+                echo(
+                    "
+                    <script>
+                        alert('Oops! user with this NRC already exists');
+                        window.location.href='signup.html';
+                    </script>
+                    "
+                );
+            } else {
+                $password = md5($password);
+
+                // Handle file uploads
+                $idFrontPath = $uploadDir . basename($_FILES['id_front']['name']);
+                $idBackPath = $uploadDir . basename($_FILES['id_back']['name']);
+                $portraitPhotoPath = $uploadDir . basename($_FILES['portrait_photo']['name']);
+
+                if (!move_uploaded_file($_FILES['id_front']['tmp_name'], $idFrontPath) ||
+                    !move_uploaded_file($_FILES['id_back']['tmp_name'], $idBackPath) ||
+                    !move_uploaded_file($_FILES['portrait_photo']['tmp_name'], $portraitPhotoPath)) {
+                    throw new Exception("Failed to upload files.");
+                }
+
+                // Insert into database
+                $stmt = $pdo->prepare("INSERT INTO registrations (
+                    full_name, dob, email, mobile_number, gender, occupation, id_type, id_number, issued_authority, 
+                    id_front_path, id_back_path, portrait_photo_path, address_type, nationality, province, district, 
+                    next_of_kin1_relationship, next_of_kin1_name, next_of_kin1_phone, 
+                    next_of_kin2_relationship, next_of_kin2_name, next_of_kin2_phone,password
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                
+                $stmt->execute([
+                    $fullName, $dob, $email, $mobileNumber, $gender, $occupation, $idType, $idNumber, $issuedAuthority, 
+                    $idFrontPath, $idBackPath, $portraitPhotoPath, $addressType, $nationality, $province, $district, 
+                    $kin1Relationship, $kin1Name, $kin1Phone, $kin2Relationship, $kin2Name, $kin2Phone,$password
+                ]);
+
+                echo(
+                    "
+                    <script>
+                        alert('You have successfully been Registered');
+                        window.location.href='../index.html';
+                    </script>
+                    "
+                );
             }
-
+        }
+            
     } catch (Exception $e) {
         echo "Error: " . $e->getMessage();
     }
