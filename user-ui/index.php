@@ -5,7 +5,7 @@
     {
         echo "<script>
                 alert('Your are curretly not logged in!');
-                window.location.href='../index.php';
+                window.location.href='../index.html';
                 </script>";
     }
 
@@ -117,54 +117,72 @@
                                     <div class="col-lg-12">
                                         <div class="single_input">
                                             <select class="wide" id="loan">
-                                                <option data-display="Amount">Amount</option>
+                                                <option value="" disabled selected>Amount</option>
                                                 <option value="500">ZMW500</option>
                                                 <option value="1000">ZMW1000</option>
+                                                <option value="1500">ZMW1500</option>
                                                 <option value="2000">ZMW2000</option>
+                                                <option value="2500">ZMW2500</option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="col-lg-12">
                                         <div class="single_input">
                                             <select class="wide" id="week">
-                                                <option data-display="Week">Week</option>
+                                                <option value="" disabled selected>Week</option>
                                                 <option value="1">1 Week</option>
                                                 <option value="2">2 Weeks</option>
                                                 <option value="3">3 Weeks</option>
                                                 <option value="4">4 Weeks</option>
                                             </select>
-                                         </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                             <p>You have to pay: ZMW<span id="repay">0</span></p>
                             <div class="submit_btn">
-                                <button class="boxed-btn3"  onclick="calculate();">calculate</button>
+                                <button class="boxed-btn3" onclick="calculate();">Calculate</button>
                             </div>
-                            <script>
-                                function calculate(){
-                                    let load = document.getElementById("loan").value;
-                                    let week = document.getElementById("week").value;
 
-                                    var loan_amount = parseInt(loan,10);
-                                    var NumOfWeeks = parseInt(week,10);
-                                    
-                                    let repay = document.getElementById("repay");
-                                    switch(NumOfWeeks)
-                                    {
-                                        case(1):
-                                             repay.innerText = 0.3*loan_amount;
-                                        case(2):
-                                            repay.innerText = 0.35*loan_amount;
-                                        case(3):
-                                            repay.innerText = 0.40*loan_amount;
-                                        case(4):
-                                            repay.innerText = 0.45*loan_amount;
-                                        break
-                                        
+                            <script>
+                                function calculate() {
+                                    const loan = document.getElementById("loan").value;
+                                    const week = document.getElementById("week").value;
+
+                                    // Check if valid values are selected
+                                    if (!loan || !week) {
+                                        alert("Please select both loan amount and duration!");
+                                        return;
                                     }
+
+                                    const loanAmount = parseInt(loan, 10);
+                                    const numOfWeeks = parseInt(week, 10);
+
+                                    let totalRepayment;
+
+                                    // Calculate repayment based on the selected week
+                                    switch (numOfWeeks) {
+                                        case 1:
+                                            totalRepayment = loanAmount + 0.3 * loanAmount;
+                                            break;
+                                        case 2:
+                                            totalRepayment = loanAmount + 0.35 * loanAmount;
+                                            break;
+                                        case 3:
+                                            totalRepayment = loanAmount + 0.4 * loanAmount;
+                                            break;
+                                        case 4:
+                                            totalRepayment = loanAmount + 0.45 * loanAmount;
+                                            break;
+                                        default:
+                                            totalRepayment = 0;
+                                    }
+
+                                    // Update the repayment amount
+                                    document.getElementById("repay").innerText = totalRepayment.toFixed(2);
                                 }
                             </script>
+
                         </div>
                     </div>
                 </div>
