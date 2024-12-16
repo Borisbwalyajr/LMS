@@ -77,7 +77,7 @@
                                         <a href="#"> <i class="fa fa-phone"></i> +260 973 567 367</a>
                                     </div>
                                     <div class="d-none d-lg-block">
-                                        <a class="boxed-btn4" href="apply.html">Apply for a Loan</a>
+                                        <a class="boxed-btn4" href="apply.php">Apply for a Loan</a>
                                     </div>
                                 </div>
                             </div>
@@ -139,7 +139,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <p>You have to pay: ZMW<span id="repay">0</span></p>
+                            <p>You have to pay: ZMW <span id="repay">0</span></p>
                             <div class="submit_btn">
                                 <button class="boxed-btn3" onclick="calculate();">Calculate</button>
                             </div>
@@ -321,7 +321,7 @@
                             </ul>
                         </div>
                         <div class="about_btn wow fadeInRight" data-wow-duration="1.3s" data-wow-delay=".5s">
-                            <a class="boxed-btn3" href="apply.html">About Us</a>
+                            <a class="boxed-btn3" href="apply.php">About Us</a>
                         </div>
                     </div>
                 </div>
@@ -385,7 +385,7 @@
                 </div>
                 <div class="col-lg-4 col-md-5">
                     <div class="loan_btn wow fadeInUp" data-wow-duration="1.2s" data-wow-delay=".4s">
-                        <a class="boxed-btn3" href="apply.html">Apply Now</a>
+                        <a class="boxed-btn3" href="apply.php">Apply Now</a>
                     </div>
                 </div>
             </div>

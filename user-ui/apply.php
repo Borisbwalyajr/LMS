@@ -1,3 +1,19 @@
+<?php
+    include "../connection.php";
+    session_start();
+    if(!isset($_SESSION['user_id']))
+    {
+        echo "<script>
+                alert('Your are curretly not logged in!');
+                window.location.href='../index.html';
+                </script>";
+    }
+
+    $stmt = $pdo->prepare("SELECT * FROM registrations WHERE id_number = ?");
+    $stmt->execute([$_SESSION['user_id']]);
+
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+?>
 <!doctype html>
 <html class="no-js" lang="zxx">
 
@@ -67,7 +83,7 @@
                                         <a href="#"> <i class="fa fa-phone"></i>  +260 973 567 367</a>
                                     </div>
                                     <div class="d-none d-lg-block">
-                                        <a class="boxed-btn4" href="apply.html">Apply for a Loan</a>
+                                        <a class="boxed-btn4" href="apply.php">Apply for a Loan</a>
                                     </div>
                                 </div>
                             </div>
@@ -111,18 +127,13 @@
                                 </div>
                             </div>
                             <div class="col-md-12">
-                                <div class="single_field">
-                                    <input type="text" placeholder="Your name">
+                                <div class="pay_text">
+                                    <p>Image Of Collateral</p>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="single_field">
-                                    <input type="text" placeholder="Email">
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="single_field">
-                                    <input type="text" placeholder="Phone no.">
+                                    <input type="file" >
                                 </div>
                             </div>
                             <div class="col-md-12">
@@ -136,17 +147,23 @@
                             </div>
                             <div class="col-md-12">
                                 <div class="single_field">
-                                    <input type="number" min="500" placeholder="Enter Amount">
+                                    <input type="number" min="500" id="loan" placeholder="Enter Amount">
                                 </div>
                             </div>
-                            <div class="col-md-12">
-                                <div class="single_field">
-                                    <input type="text" name="" id="datepicker" placeholder="Month">
+                            <div class="col-lg-12">
+                                <div class="single_input">
+                                    <select class="wide" id="week" onchange="updateRepayment()">
+                                        <option value="" disabled selected>Week</option>
+                                        <option value="1">1 Week</option>
+                                        <option value="2">2 Weeks</option>
+                                        <option value="3">3 Weeks</option>
+                                        <option value="4">4 Weeks</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="pay_text">
-                                    <p>You have to pay: <span>ZMW 0</span></p>
+                                    <p>You have to pay: ZMW <span id="repay"> 0</span></p>
                                 </div>
                             </div>
                             <div class="col-md-12">
@@ -160,6 +177,45 @@
                                 </div>
                             </div>
                         </div>
+                        <script>
+                            function updateRepayment() {
+                                const loan = document.getElementById("loan").value;
+                                const week = document.getElementById("week").value;
+                                const repay = document.getElementById("repay");
+
+                                // Ensure both values are selected
+                                if (!loan || !week) {
+                                    repay.innerText = "0";
+                                    return;
+                                }
+
+                                const loanAmount = parseInt(loan, 10);
+                                const numOfWeeks = parseInt(week, 10);
+
+                                let totalRepayment;
+
+                                // Calculate repayment based on the selected week
+                                switch (numOfWeeks) {
+                                    case 1:
+                                        totalRepayment = loanAmount + 0.3 * loanAmount;
+                                        break;
+                                    case 2:
+                                        totalRepayment = loanAmount + 0.35 * loanAmount;
+                                        break;
+                                    case 3:
+                                        totalRepayment = loanAmount + 0.4 * loanAmount;
+                                        break;
+                                    case 4:
+                                        totalRepayment = loanAmount + 0.45 * loanAmount;
+                                        break;
+                                    default:
+                                        totalRepayment = 0;
+                                }
+
+                                // Update the repayment amount
+                                repay.innerText = totalRepayment.toFixed(2);
+                            }
+                        </script>
                     </form>
                 </div>
             </div>
@@ -222,7 +278,7 @@
                 </div>
                 <div class="col-lg-4 col-md-5">
                     <div class="loan_btn wow fadeInUp" data-wow-duration="1.2s" data-wow-delay=".4s">
-                        <a class="boxed-btn3" href="apply.html">Apply Now</a>
+                        <a class="boxed-btn3" href="apply.php">Apply Now</a>
                     </div>
                 </div>
             </div>
