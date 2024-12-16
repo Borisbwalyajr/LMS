@@ -1,3 +1,19 @@
+<?php
+    include "../connection.php";
+    session_start();
+    if(!isset($_SESSION['user_id']))
+    {
+        echo "<script>
+                alert('Your are curretly not logged in!');
+                window.location.href='../index.php';
+                </script>";
+    }
+
+    $stmt = $pdo->prepare("SELECT * FROM registrations WHERE id_number = ?");
+    $stmt->execute([$_SESSION['user_id']]);
+
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+?>
 <!doctype html>
 <html class="no-js" lang="zxx">
 
@@ -37,7 +53,7 @@
                         <div class="row align-items-center">
                             <div class="col-xl-3 col-lg-2">
                                 <div class="logo">
-                                    <a href="index.html">
+                                    <a href="index.php">
                                         <img src="img/logo.png" alt="">
                                     </a>
                                 </div>
@@ -46,10 +62,10 @@
                                 <div class="main-menu  d-none d-lg-block">
                                     <nav>
                                         <ul id="navigation">
-                                            <li><a href="index.html#">home</a></li>
-                                            <li><a href="index.html#offer">Our Offer</a></li>
-                                            <li><a href="index.html#about">about</a></li>
-                                            <li><a href="index.html#how">How It Works</a></li>
+                                            <li><a href="index.php#">home</a></li>
+                                            <li><a href="index.php#offer">Our Offer</a></li>
+                                            <li><a href="index.php#about">about</a></li>
+                                            <li><a href="index.php#how">How It Works</a></li>
                                             <li><a href="contact.html">Contact</a></li>
                                         </ul>
                                     </nav>
@@ -86,31 +102,31 @@
                         <div class="slider_text">
                             <h3 class="wow fadeInRight" data-wow-duration="1s" data-wow-delay=".1s">Get Loan for your Business growth or Pessonal startup</h3>
                             <div class="sldier_btn wow fadeInLeft" data-wow-duration="1s" data-wow-delay=".2s">
-                                <a href="#" class="boxed-btn3">How it Works</a>
+                                <a href="#how" class="boxed-btn3">How it Works</a>
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-5 col-md-6">
                         <div class="payment_form white-bg wow fadeInDown" data-wow-duration="1.2s" data-wow-delay=".2s">
                             <div class="info text-center">
-                                <h4>How much do you want?</h4>
+                                <h4>How much do you want <?php echo $user["full_name"] ?>?</h4>
                                 <p>We provide instant cash loans with quick pay</p>
                             </div>
                             <div class="form">
                                 <div class="row">
                                     <div class="col-lg-12">
                                         <div class="single_input">
-                                            <select class="wide">
+                                            <select class="wide" id="loan">
                                                 <option data-display="Amount">Amount</option>
-                                                <option value="1">ZMW500</option>
-                                                <option value="2">ZMW1000</option>
-                                                <option value="3">ZMW2000</option>
+                                                <option value="500">ZMW500</option>
+                                                <option value="1000">ZMW1000</option>
+                                                <option value="2000">ZMW2000</option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="col-lg-12">
                                         <div class="single_input">
-                                            <select class="wide">
+                                            <select class="wide" id="week">
                                                 <option data-display="Week">Week</option>
                                                 <option value="1">1 Week</option>
                                                 <option value="2">2 Weeks</option>
@@ -121,10 +137,34 @@
                                     </div>
                                 </div>
                             </div>
-                            <p>You have to pay: <span>ZMW0</span></p>
+                            <p>You have to pay: ZMW<span id="repay">0</span></p>
                             <div class="submit_btn">
-                                <button class="boxed-btn3" type="submit">Continue</button>
+                                <button class="boxed-btn3"  onclick="calculate();">calculate</button>
                             </div>
+                            <script>
+                                function calculate(){
+                                    let load = document.getElementById("loan").value;
+                                    let week = document.getElementById("week").value;
+
+                                    var loan_amount = parseInt(loan,10);
+                                    var NumOfWeeks = parseInt(week,10);
+                                    
+                                    let repay = document.getElementById("repay");
+                                    switch(NumOfWeeks)
+                                    {
+                                        case(1):
+                                             repay.innerText = 0.3*loan_amount;
+                                        case(2):
+                                            repay.innerText = 0.35*loan_amount;
+                                        case(3):
+                                            repay.innerText = 0.40*loan_amount;
+                                        case(4):
+                                            repay.innerText = 0.45*loan_amount;
+                                        break
+                                        
+                                    }
+                                }
+                            </script>
                         </div>
                     </div>
                 </div>

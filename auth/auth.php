@@ -62,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     "
                 );
             } else {
-                $password = md5($password);
+                $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
                 // Handle file uploads
                 $idFrontPath = $uploadDir . basename($_FILES['id_front']['name']);
@@ -86,14 +86,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $stmt->execute([
                     $fullName, $dob, $email, $mobileNumber, $gender, $occupation, $idType, $idNumber, $issuedAuthority, 
                     $idFrontPath, $idBackPath, $portraitPhotoPath, $addressType, $nationality, $province, $district, 
-                    $kin1Relationship, $kin1Name, $kin1Phone, $kin2Relationship, $kin2Name, $kin2Phone,$password
+                    $kin1Relationship, $kin1Name, $kin1Phone, $kin2Relationship, $kin2Name, $kin2Phone,$hashedPassword
                 ]);
 
                 echo(
                     "
                     <script>
                         alert('You have successfully been Registered');
-                        window.location.href='../index.html';
+                        window.location.href='../index.php';
                     </script>
                     "
                 );
