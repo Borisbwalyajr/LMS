@@ -144,7 +144,7 @@
                                         <a href="#"> <i class="fa fa-phone"></i>  +260 973 567 367</a>
                                     </div>
                                     <div class="d-none d-lg-block">
-                                        <a class="boxed-btn4" href="apply.php">Apply for a Loan</a>
+                                        <a class="boxed-btn4" href="./logout.php">Logout</a>
                                     </div>
                                 </div>
                             </div>
