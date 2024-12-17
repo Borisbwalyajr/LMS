@@ -285,7 +285,7 @@
                             </div>
                         </div>
                         <div class="info text-center">
-                            <h3>3 WEEKS</h3>
+                            <h3>4 WEEKS</h3>
                         </div>
                         <div class="service_content">
                             <ul>
