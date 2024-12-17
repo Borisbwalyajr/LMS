@@ -6,13 +6,74 @@
         echo "<script>
                 alert('Your are curretly not logged in!');
                 window.location.href='../index.html';
-                </script>";
+            </script>";
     }
 
     $stmt = $pdo->prepare("SELECT * FROM registrations WHERE id_number = ?");
     $stmt->execute([$_SESSION['user_id']]);
 
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        // Sanitize and retrieve input data
+        $loanAmount = filter_input(INPUT_POST, 'loan_amount', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+        $purpose = htmlspecialchars($_POST['purpose'], ENT_QUOTES, 'UTF-8'); // Use htmlspecialchars for strings
+        $weeks = filter_input(INPUT_POST, 'weeks', FILTER_SANITIZE_NUMBER_INT);
+        $repayment = filter_input(INPUT_POST, 'repayment', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+    
+        // Calculate the due date
+        $loanDate = date('Y-m-d'); // Current date
+        $dueDate = date('Y-m-d', strtotime("+$weeks weeks")); // Add weeks to the current date
+    
+        // Handle the file upload
+        if (isset($_FILES['collateral_image']) && $_FILES['collateral_image']['error'] == 0) {
+            $targetDir = "./img/collateral/";
+            $fileName = uniqid() . "-" . basename($_FILES['collateral_image']['name']);
+            $targetFilePath = $targetDir . $fileName;
+            $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
+    
+            // Move uploaded file to target directory
+            if (move_uploaded_file($_FILES['collateral_image']['tmp_name'], $targetFilePath)) {
+                try {
+                    // Prepare and execute the SQL query
+                    $stmt = $pdo->prepare("INSERT INTO loan_applications (nrc, amount, purpose, weeks, repayment, collateral_image, loan_date, due_date) 
+                        VALUES (:nrc, :amount, :purpose, :weeks, :repayment, :collateral_image, :loan_date, :due_date)");
+                    
+                    $stmt->bindParam(':nrc', $user["id_number"]); // Assuming `$user` contains the user's details
+                    $stmt->bindParam(':amount', $loanAmount);
+                    $stmt->bindParam(':purpose', $purpose);
+                    $stmt->bindParam(':weeks', $weeks);
+                    $stmt->bindParam(':repayment', $repayment);
+                    $stmt->bindParam(':collateral_image', $fileName);
+                    $stmt->bindParam(':loan_date', $loanDate);
+                    $stmt->bindParam(':due_date', $dueDate);
+    
+                    if ($stmt->execute()) {
+                        echo "<script>
+                                alert('Loan Application Submitted Successfully!');
+                              </script>";
+                    } else {
+                        echo "<script>
+                                alert('Failed To Submit Loan!');
+                              </script>";
+                    }
+                } catch (PDOException $e) {
+                    echo "<script>
+                        alert('Failed To Upload Collateral Image!');
+                      </script>";
+                }
+            } else {
+                echo "<script>
+                        alert('Failed To Upload Collateral Image!');
+                      </script>";
+            }
+        } else {
+            echo "<script>
+                    alert('Please upload a valid collateral image!');
+                  </script>";
+        }
+    }
+    
 ?>
 <!doctype html>
 <html class="no-js" lang="zxx">
@@ -105,7 +166,7 @@
             <div class="row">
                 <div class="col-xl-12">
                     <div class="bradcam_text">
-                        <h3>Apply Now</h3>
+                        <h3>Welcome <?php echo $user["full_name"] ?></h3>
                     </div>
                 </div>
             </div>
@@ -118,11 +179,11 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-8">
-                    <form action="#" class="apply_form">
+                    <form action="#" class="apply_form" method="POST" enctype="multipart/form-data">
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="apply_info_text text-center">
-                                    <h3>How much do you want?</h3>
+                                    <h3>How much do you want to borrow?</h3>
                                     <p>We provide instant cash loans with quick approval that suit your term length</p>
                                 </div>
                             </div>
@@ -133,12 +194,12 @@
                             </div>
                             <div class="col-md-12">
                                 <div class="single_field">
-                                    <input type="file" >
+                                    <input type="file" accept="image/png, image/jpeg, image/jpg, image/gif" name="collateral_image" required>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="single_field">
-                                    <select class="wide">
+                                    <select class="wide" name="purpose" required>
                                         <option data-display="Purpose">Purpose</option>
                                         <option value="Personal">Personal Loan</option>
                                         <option value="2">Business Loan</option>
@@ -147,12 +208,12 @@
                             </div>
                             <div class="col-md-12">
                                 <div class="single_field">
-                                    <input type="number" min="500" id="loan" placeholder="Enter Amount">
+                                    <input type="number" min="500" id="loan" name="loan_amount" placeholder="Enter Amount" required>
                                 </div>
                             </div>
                             <div class="col-lg-12">
                                 <div class="single_input">
-                                    <select class="wide" id="week" onchange="updateRepayment()">
+                                    <select class="wide" id="week" onchange="updateRepayment()" required name="weeks">
                                         <option value="" disabled selected>Week</option>
                                         <option value="1">1 Week</option>
                                         <option value="2">2 Weeks</option>
@@ -164,11 +225,7 @@
                             <div class="col-md-12">
                                 <div class="pay_text">
                                     <p>You have to pay: ZMW <span id="repay"> 0</span></p>
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="single_field">
-                                    <textarea name="#" id="" cols="30" rows="10" placeholder="Message" ></textarea>
+                                    <input type="hidden" id="hiddenCollateral" name="repayment">
                                 </div>
                             </div>
                             <div class="col-md-12">
@@ -178,6 +235,12 @@
                             </div>
                         </div>
                         <script>
+                            // Copy the paragraph text to the hidden input before submission
+                            document.querySelector('form').addEventListener('submit', function () {
+                                const paragraphText = document.getElementById('repay').innerText;
+                                document.getElementById('hiddenCollateral').value = paragraphText;
+                            });
+
                             function updateRepayment() {
                                 const loan = document.getElementById("loan").value;
                                 const week = document.getElementById("week").value;

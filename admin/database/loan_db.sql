@@ -186,6 +186,20 @@ CREATE TABLE registrations (
     next_of_kin2_phone VARCHAR(15) NOT NULL,
     password varchar(255) NOT NULL
 );
+--
+-- Table structure for table `loan_applications`
+--
+CREATE TABLE loan_applications (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nrc VARCHAR(13),
+    amount DECIMAL(10, 2) NOT NULL,
+    purpose VARCHAR(255) NOT NULL,
+    weeks INT NOT NULL,
+    repayment DECIMAL(10, 2) NOT NULL,
+    collateral_image VARCHAR(255) NOT NULL,
+    loan_date DATE NOT NULL DEFAULT CURRENT_DATE,
+    due_date DATE NOT NULL
+);
 
 --
 -- Table structure for table `users`
