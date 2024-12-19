@@ -31,6 +31,9 @@ function loadContent(contentType = 'dashboard') { // Default to 'dashboard'
         case 'transactions':
             url = 'transaction.html'; // Path to the profile content file
             break;
+        case 'referral':
+            url = 'referral.html'; // Path to the profile content file
+            break;
         default:
             url = 'dashboard.html'; // Fallback to dashboard if no valid content type
             break;
