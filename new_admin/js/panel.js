@@ -25,6 +25,12 @@ function loadContent(contentType = 'dashboard') { // Default to 'dashboard'
         case 'approved':
             url = 'approved.html'; // Path to the profile content file
             break;
+        case 'overdue':
+            url = 'overdue.html'; // Path to the profile content file
+            break;
+        case 'transactions':
+            url = 'transaction.html'; // Path to the profile content file
+            break;
         default:
             url = 'dashboard.html'; // Fallback to dashboard if no valid content type
             break;
