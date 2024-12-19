@@ -8,7 +8,7 @@ document.querySelectorAll('.menu-btn').forEach(button => {
     });
 });
 
-function loadContent(contentType) {
+function loadContent(contentType = 'dashboard') { // Default to 'dashboard'
     const xhr = new XMLHttpRequest();
     let url = '';
 
@@ -16,15 +16,15 @@ function loadContent(contentType) {
         case 'dashboard':
             url = 'dashboard.html'; // Path to the dashboard content file
             break;
-        case 'settings':
-            url = 'settings.html'; // Path to the settings content file
+        case 'users':
+            url = 'users.html'; // Path to the registered users content file
             break;
         case 'profile':
             url = 'profile.html'; // Path to the profile content file
             break;
         default:
-            document.getElementById('dynamic-content').innerHTML = '<h2>Welcome</h2><p>Select a menu item to see content here.</p>';
-            return;
+            url = 'dashboard.html'; // Fallback to dashboard if no valid content type
+            break;
     }
 
     xhr.open('GET', url, true);
@@ -41,6 +41,11 @@ function loadContent(contentType) {
     xhr.send();
 }
 
+// Call loadContent with default parameter on page load
+document.addEventListener('DOMContentLoaded', function() {
+    loadContent(); // Load dashboard content by default
+});
+
 // Toggle sidebar visibility for smaller screens
 document.getElementById('hamburger-btn').addEventListener('click', function() {
     const sidebar = document.getElementById('sidebar');
@@ -51,4 +56,14 @@ document.getElementById('hamburger-btn').addEventListener('click', function() {
 document.getElementById('close-btn').addEventListener('click', function() {
     const sidebar = document.getElementById('sidebar');
     sidebar.classList.remove('visible'); // Hide the sidebar
+});
+
+$(document).ready(function() {
+    // Initialize DataTable
+    var table = $('#users-table').DataTable();
+
+    // Search functionality
+    $('#search').on('keyup', function() {
+        table.search(this.value).draw();
+    });
 });

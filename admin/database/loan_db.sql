@@ -191,6 +191,7 @@ CREATE TABLE registrations (
 --
 CREATE TABLE loan_applications (
     id INT AUTO_INCREMENT PRIMARY KEY,
+    loan_id varchar(10) not null,
     nrc VARCHAR(13),
     amount DECIMAL(10, 2) NOT NULL,
     purpose VARCHAR(255) NOT NULL,

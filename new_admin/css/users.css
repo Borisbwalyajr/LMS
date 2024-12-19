@@ -1,0 +1,44 @@
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+th {
+    background-color: #003366; /* Dark blue */
+    color: white;
+}
+
+img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%; /* Circular images */
+}
+
+.action-btn {
+    padding: 5px 10px;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+.suspend {
+    background-color: #ff4d4d; /* Red for suspend */
+}
+
+.splt {
+    background-color: #4CAF50; /* Green for split */
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    table {
+        font-size: 14px; /* Smaller font size on mobile */
+    }
+}
