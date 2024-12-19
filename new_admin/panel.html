@@ -7,17 +7,17 @@
     <link rel="stylesheet" href="./css/panel.css">
     <link rel="stylesheet" href="./css/dashboard.css">
     <link rel="stylesheet" href="./css/users.css">
+    <link rel="stylesheet" href="./css/pending.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
+    
     <div class="container">
         <button class="hamburger" id="hamburger-btn">
-            <span class="bar"></span>
-            <span class="bar"></span>
-            <span class="bar"></span>
+            <i class="fas fa-bars"></i>
         </button>
         <aside class="sidebar" id="sidebar">
-            <h2>Admin Menu</h2>
+            <h2 class="title"><i class="fas fa-user-shield"></i> Admin Menu</h2>
             <ul>
                 <hr>
                 <li><button class="menu-btn" data-content="dashboard"><i class="fas fa-table"></i> Dashboard</button></li>
@@ -27,8 +27,6 @@
                 <li><button class="menu-btn" data-content="approved"><i class="fas fa-check-square"></i> Approved Loans</button></li>
                 <hr>
                 <li><button class="menu-btn" data-content="overdue"><i class="fas fa-clock"></i> Overdue Loans</button></li>
-                <hr>
-                <li><button class="menu-btn" data-content="collateral"><i class="fas fa-tv"></i> Collateral Management</button></li>
                 <hr>
                 <li><button class="menu-btn" data-content="users"><i class="fas fa-users"></i> Registered Users</button></li>
                 <hr>
@@ -54,6 +52,8 @@
     </footer>
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+    <script src="./js/table.js"></script>
+    <script src="./js/pending.js"></script>
     <script src="./js/panel.js"></script>
 </body>
 </html>

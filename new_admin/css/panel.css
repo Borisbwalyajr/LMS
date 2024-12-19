@@ -85,7 +85,9 @@ body {
     cursor: pointer;
     align-self: flex-end; /* Align close button to the top right */
 }
-
+.title{
+    color: white;
+}
 .content {
     flex-grow: 1; /* Allow content to grow and fill the space */
     padding: 20px;

@@ -19,8 +19,11 @@ function loadContent(contentType = 'dashboard') { // Default to 'dashboard'
         case 'users':
             url = 'users.html'; // Path to the registered users content file
             break;
-        case 'profile':
-            url = 'profile.html'; // Path to the profile content file
+        case 'pending':
+            url = 'pending.html'; // Path to the profile content file
+            break;
+        case 'approved':
+            url = 'approved.html'; // Path to the profile content file
             break;
         default:
             url = 'dashboard.html'; // Fallback to dashboard if no valid content type
@@ -31,6 +34,7 @@ function loadContent(contentType = 'dashboard') { // Default to 'dashboard'
     xhr.onload = function() {
         if (xhr.status >= 200 && xhr.status < 300) {
             document.getElementById('dynamic-content').innerHTML = xhr.responseText;
+
         } else {
             document.getElementById('dynamic-content').innerHTML = '<h2>Error</h2><p>Content could not be loaded.</p>';
         }
@@ -52,18 +56,3 @@ document.getElementById('hamburger-btn').addEventListener('click', function() {
     sidebar.classList.toggle('visible'); // Toggle the visible class
 });
 
-// Close sidebar when close button is clicked
-document.getElementById('close-btn').addEventListener('click', function() {
-    const sidebar = document.getElementById('sidebar');
-    sidebar.classList.remove('visible'); // Hide the sidebar
-});
-
-$(document).ready(function() {
-    // Initialize DataTable
-    var table = $('#users-table').DataTable();
-
-    // Search functionality
-    $('#search').on('keyup', function() {
-        table.search(this.value).draw();
-    });
-});

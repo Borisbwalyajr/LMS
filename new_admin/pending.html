@@ -1,0 +1,50 @@
+<h2>Pending Loans</h2>
+<input type="text" id="search" placeholder="Search by Loan ID or NRC" style="width: 100%; padding: 10px; margin-bottom: 20px;">
+
+<table id="loans-table">
+    <thead>
+        <tr>
+            <th>Loan ID</th>
+            <th>User NRC</th>
+            <th>Amount</th>
+            <th>Purpose</th>
+            <th>Weeks</th>
+            <th>Repayment</th>
+            <th>Loan Date</th>
+            <th>Due Date</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>LOAN001</td>
+            <td>123456789</td>
+            <td>ZMW5000</td>
+            <td>Home Renovation</td>
+            <td>12</td>
+            <td>ZMW450/month</td>
+            <td>2023-01-15</td>
+            <td>2024-01-15</td>
+            <td>
+                <button class="action-btn approve">Approve</button>
+                <button class="action-btn dismiss">Dismiss</button>
+            </td>
+        </tr>
+        <tr>
+            <td>LOAN002</td>
+            <td>987654321</td>
+            <td>ZMW3000</td>
+            <td>Car Purchase</td>
+            <td>24</td>
+            <td>ZMW150/month</td>
+            <td>2023-02-20</td>
+            <td>2025-02-20</td>
+            <td>
+                <button class="action-btn approve">Approve</button>
+                <button class="action-btn dismiss">Dismiss</button>
+            </td>
+        </tr>
+        <!-- Add more loan rows as needed -->
+    </tbody>
+</table>
+<script src="script.js"></script>

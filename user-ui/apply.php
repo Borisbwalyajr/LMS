@@ -25,6 +25,7 @@
         $loanDate = date('Y-m-d'); // Current date
         $dueDate = date('Y-m-d', strtotime("+$weeks weeks")); // Add weeks to the current date
         $loan_code = "FVL".random_int(10000,100000);
+        $status = "not approved";
     
         // Handle the file upload
         if (isset($_FILES['collateral_image']) && $_FILES['collateral_image']['error'] == 0) {
@@ -37,8 +38,8 @@
             if (move_uploaded_file($_FILES['collateral_image']['tmp_name'], $targetFilePath)) {
                 try {
                     // Prepare and execute the SQL query
-                    $stmt = $pdo->prepare("INSERT INTO loan_applications (loan_id, nrc, amount, purpose, weeks, repayment, collateral_image, loan_date, due_date) 
-                        VALUES (:loan, :nrc, :amount, :purpose, :weeks, :repayment, :collateral_image, :loan_date, :due_date)");
+                    $stmt = $pdo->prepare("INSERT INTO loan_applications (loan_id, nrc, amount, purpose, weeks, repayment, collateral_image, loan_date, due_date,status) 
+                        VALUES (:loan, :nrc, :amount, :purpose, :weeks, :repayment, :collateral_image, :loan_date, :due_date, :status)");
 
                     $stmt->bindParam(':loan', $loan_code); // Assuming `$user` contains the user's details
                     $stmt->bindParam(':nrc', $user["id_number"]); // Assuming `$user` contains the user's details
@@ -49,6 +50,7 @@
                     $stmt->bindParam(':collateral_image', $fileName);
                     $stmt->bindParam(':loan_date', $loanDate);
                     $stmt->bindParam(':due_date', $dueDate);
+                    $stmt->bindParam(':status', $status);
     
                     if ($stmt->execute()) {
                         echo "<script>
