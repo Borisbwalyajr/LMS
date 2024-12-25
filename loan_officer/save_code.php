@@ -1,8 +1,8 @@
 <?php
 // Assuming you're using PDO to connect to the database
-$dsn = 'mysql:host=localhost;dbname=your_database';
-$username = 'your_username';
-$password = 'your_password';
+$dsn = 'mysql:host=localhost;dbname=loan_db';
+$username = 'root';
+$password = '';
 
 try {
     $pdo = new PDO($dsn, $username, $password);

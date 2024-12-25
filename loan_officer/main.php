@@ -1,4 +1,24 @@
-<style>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Admin Dashboard</title>
+</head>
+
+<body>
+    
+   <?php
+   include 'sidebar.php';
+   ?>
+
+    <section class="dashboard">
+        <div class="container">
+            
+        <style>
     .form-container {
         max-width: 400px;
         margin: 0 auto;
@@ -90,3 +110,18 @@
         });
     });
 </script>
+
+
+
+        </div>
+    </section>
+
+    <script src="index.js"></script>
+    
+    <!-- Sources for icons -->
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    
+</body>
+
+</html>

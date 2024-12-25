@@ -30,7 +30,7 @@ if (isset($_POST['login'])) {
     if ($result->num_rows > 0) {
         // Valid credentials, start a session
         $_SESSION['username'] = $user;
-        header("Location: panel.php"); // Redirect to admin dashboard
+        header("Location: loan_officer.html"); // Redirect to admin dashboard
         exit();
     } else {
         // Invalid credentials
