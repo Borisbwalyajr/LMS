@@ -1,4 +1,19 @@
-<h2>Approved Loans</h2>
+
+<?php
+// Database connection
+$conn = new mysqli("localhost", "root", "", "loan_db");
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// Fetch loans with status "pending"
+$sql = "SELECT * FROM loan_application WHERE status = 'pending'";
+$result = $conn->query($sql);
+?>
+
+<h2>Pending Loans</h2>
 <input type="text" id="search" placeholder="Search by Loan ID or NRC" style="width: 100%; padding: 10px; margin-bottom: 20px;">
 
 <table id="loans-table">
@@ -6,37 +21,64 @@
         <tr>
             <th>Loan ID</th>
             <th>User NRC</th>
-            <th>Disbursed Amount</th>
+            <th>Amount</th>
             <th>Purpose</th>
             <th>Weeks</th>
-            <th>Repayment Amount</th>
+            <th>Repayment</th>
             <th>Loan Date</th>
             <th>Due Date</th>
+            <th>Action</th>
         </tr>
     </thead>
     <tbody>
-        <tr>
-            <td>LOAN001</td>
-            <td>123456789</td>
-            <td>ZMW5000</td>
-            <td>Home Renovation</td>
-            <td>3</td>
-            <td>ZMW450/month</td>
-            <td>2023-01-15</td>
-            <td>2024-01-15</td>
-
-        </tr>
-        <tr>
-            <td>LOAN002</td>
-            <td>987654321</td>
-            <td>ZMW3000</td>
-            <td>Personal</td>
-            <td>4</td>
-            <td>ZMW150/month</td>
-            <td>2023-02-20</td>
-            <td>2025-02-20</td>
-        </tr>
-        <!-- Add more loan rows as needed -->
+        <?php
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                echo "<tr>";
+                echo "<td>" . $row['loan_id'] . "</td>";
+                echo "<td>" . $row['user_nrc'] . "</td>";
+                echo "<td>ZMW" . $row['amount'] . "</td>";
+                echo "<td>" . $row['purpose'] . "</td>";
+                echo "<td>" . $row['weeks'] . "</td>";
+                echo "<td>ZMW" . $row['repayment'] . "/month</td>";
+                echo "<td>" . $row['loan_date'] . "</td>";
+                echo "<td>" . $row['due_date'] . "</td>";
+                echo "<td>
+                        <button class='action-btn approve'>Approve</button>
+                        <button class='action-btn dismiss'>Dismiss</button>
+                      </td>";
+                echo "</tr>";
+            }
+        } else {
+            echo "<tr><td colspan='9'>No loans found</td></tr>";
+        }
+        ?>
     </tbody>
 </table>
-<script src="script.js"></script>
+<script>
+    document.getElementById("search").addEventListener("input", function () {
+    const filter = this.value.toUpperCase();
+    const table = document.getElementById("loans-table");
+    const rows = table.getElementsByTagName("tr");
+
+    for (let i = 1; i < rows.length; i++) {
+        const loanId = rows[i].getElementsByTagName("td")[0];
+        const userNrc = rows[i].getElementsByTagName("td")[1];
+
+        if (loanId || userNrc) {
+            const loanIdText = loanId.textContent || loanId.innerText;
+            const userNrcText = userNrc.textContent || userNrc.innerText;
+
+            if (
+                loanIdText.toUpperCase().indexOf(filter) > -1 ||
+                userNrcText.toUpperCase().indexOf(filter) > -1
+            ) {
+                rows[i].style.display = "";
+            } else {
+                rows[i].style.display = "none";
+            }
+        }
+    }
+});
+
+</script>

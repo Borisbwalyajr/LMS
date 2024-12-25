@@ -24,7 +24,7 @@
                 <hr>
                 <li><button class="menu-btn" data-content="dashboard"><i class="fas fa-table"></i> Dashboard</button></li>
                 <hr>
-                <li><button class="menu-btn" data-content="pending"><i class="fas fa-hourglass-half"></i> Pending Loans</button></li>
+                <li><button class="menu-btn"  data-content="pending"><i class="fas fa-hourglass-half"></i> Pending Loans</button></li>
                 <hr>
                 <li><button class="menu-btn" data-content="approved"><i class="fas fa-check-square"></i> Approved Loans</button></li>
                 <hr>

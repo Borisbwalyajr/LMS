@@ -1,0 +1,127 @@
+/* styles.css */
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f0f4ff; /* Light blue background */
+    height: 100vh; /* Full height */
+}
+
+.container {
+    display: flex;
+    height: 100vh; /* Full height for the container */
+}
+
+.hamburger {
+    display: none; /* Hidden by default */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    z-index: 1001; /* Ensure it is on top */
+}
+
+.hamburger .bar {
+    width: 30px;
+    height: 3px;
+    background-color: #003366; /* Dark blue */
+    margin: 3px 0;
+    transition: 0.3s;
+}
+
+.sidebar {
+    width: 250px;
+    background-color: #003366; /* Dark blue */
+    color: white;
+    padding: 20px;
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    height: 100%; /* Full height */
+    transition: transform 0.3s ease; /* Smooth transition for sidebar */
+    transform: translateX(0); /* Default position */
+}
+
+.sidebar.hidden {
+    transform: translateX(-100%); /* Hide sidebar */
+}
+
+.sidebar h2 {
+    margin: 0 0 20px;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+    flex-grow: 1; /* Allow the list to grow and fill the space */
+}
+
+.sidebar ul li {
+    margin: 10px 0;
+}
+
+.sidebar .menu-btn {
+    background : none;
+    color: white;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+    padding: 10px;
+    transition: background 0.3s;
+}
+
+.sidebar .menu-btn:hover {
+    background-color: #00509e; /* Lighter blue on hover */
+}
+
+.close-btn {
+    background: transparent;
+    color: white;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    align-self: flex-end; /* Align close button to the top right */
+}
+.title{
+    color: white;
+}
+.content {
+    flex-grow: 1; /* Allow content to grow and fill the space */
+    padding: 20px;
+}
+
+.footer {
+    text-align: center;
+    padding: 10px;
+    background-color: #003366; /* Dark blue */
+    color: white;
+    position: fixed; /* Position fixed for footer */
+    bottom: 0; /* Stick to the bottom */
+    width: 100%; /* Full width */
+}
+
+@media (max-width: 768px) {
+    .hamburger {
+        display: flex; /* Show hamburger button on smaller screens */
+    }
+
+    .sidebar {
+        position: fixed; /* Fix sidebar position */
+        left: 0;
+        top: 0;
+        height: 100%; /* Full height */
+        transform: translateX(-100%); /* Start hidden */
+    }
+
+    .sidebar.visible {
+        transform: translateX(0); /* Show sidebar */
+    }
+
+    .content {
+        padding: 20px;
+        margin-left: 0; /* No margin on smaller screens */
+    }
+}
