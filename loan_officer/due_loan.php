@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="style.css">
     <title>Admin Dashboard</title>
     <style>
-        /* General Styles for the Table */
+         /* General Styles for the Table */
 table {
     width: 100%;
     border-collapse: collapse;
@@ -107,7 +107,8 @@ tr td {
         width: 100%;
     }
 }
-</style>
+
+    </style>
 </head>
 
 <body>
@@ -119,16 +120,47 @@ tr td {
     <section class="dashboard">
         <div class="container">
             
-<?php
+        <?php
 // Include the database connection
 include 'connection.php';
 
 // Fetch loans with status "approved"
 $sql = "SELECT * FROM loan_applications WHERE status = 'approved'";
 $stmt = $pdo->query($sql); // Use $pdo instead of $conn
+
+// Check if seize action is triggered
+if (isset($_POST['seize_loan_id'])) {
+    $loanId = $_POST['seize_loan_id'];
+
+    // Get the loan details to insert into dueloans
+    $stmtLoanDetails = $pdo->prepare("SELECT * FROM loan_applications WHERE loan_id = ?");
+    $stmtLoanDetails->execute([$loanId]);
+    $loan = $stmtLoanDetails->fetch(PDO::FETCH_ASSOC);
+
+    if ($loan) {
+        // Insert loan data into dueloans table
+        $stmtInsert = $pdo->prepare("INSERT INTO dueloans (loan_id, nrc, amount, purpose, weeks, repayment, loan_date, due_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmtInsert->execute([
+            $loan['loan_id'],
+            $loan['nrc'],
+            $loan['amount'],
+            $loan['purpose'],
+            $loan['weeks'],
+            $loan['repayment'],
+            $loan['loan_date'],
+            $loan['due_date']
+        ]);
+
+        // Delete loan from loan_applications table
+        $stmtDelete = $pdo->prepare("DELETE FROM loan_applications WHERE loan_id = ?");
+        $stmtDelete->execute([$loanId]);
+
+        echo "<script>alert('Loan has been seized and moved to the due loans list.'); window.location.href = 'loan_officer.php';</script>";
+    }
+}
 ?>
 
-<h2>Approved Loans</h2>
+<h2>Due Loans</h2>
 <input type="text" id="search" placeholder="Search by Loan ID or NRC" style="width: 100%; padding: 10px; margin-bottom: 20px;">
 
 <table id="loans-table">
@@ -159,8 +191,9 @@ $stmt = $pdo->query($sql); // Use $pdo instead of $conn
                 echo "<td>" . htmlspecialchars($row['loan_date']) . "</td>";
                 echo "<td>" . htmlspecialchars($row['due_date']) . "</td>";
                 echo "<td>
-                        <button class='action-btn approve'>Approve</button>
-                        <button class='action-btn dismiss'>Dismiss</button>
+                        <form method='POST' style='display:inline;'>
+                            <button type='submit' name='seize_loan_id' value='" . htmlspecialchars($row['loan_id']) . "' class='action-btn dismiss'>Seize</button>
+                        </form>
                       </td>";
                 echo "</tr>";
             }
@@ -197,6 +230,8 @@ $stmt = $pdo->query($sql); // Use $pdo instead of $conn
         }
     });
 </script>
+
+
 
         </div>
     </section>

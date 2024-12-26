@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <title>Admin Dashboard</title>
+
     <style>
         /* General Styles for the Table */
 table {
@@ -108,6 +109,7 @@ tr td {
     }
 }
 </style>
+
 </head>
 
 <body>
@@ -119,16 +121,48 @@ tr td {
     <section class="dashboard">
         <div class="container">
             
-<?php
+        <?php
 // Include the database connection
 include 'connection.php';
 
-// Fetch loans with status "approved"
-$sql = "SELECT * FROM loan_applications WHERE status = 'approved'";
+// Fetch due loans from dueloans table
+$sql = "SELECT * FROM dueloans";
 $stmt = $pdo->query($sql); // Use $pdo instead of $conn
+
+// Check if restore action is triggered
+if (isset($_POST['restore_loan_id'])) {
+    $loanId = $_POST['restore_loan_id'];
+
+    // Get the loan details to insert back into loan_applications
+    $stmtLoanDetails = $pdo->prepare("SELECT * FROM dueloans WHERE loan_id = ?");
+    $stmtLoanDetails->execute([$loanId]);
+    $loan = $stmtLoanDetails->fetch(PDO::FETCH_ASSOC);
+
+    if ($loan) {
+        // Insert loan data back into loan_applications table
+        $stmtInsert = $pdo->prepare("INSERT INTO loan_applications (loan_id, nrc, amount, purpose, weeks, repayment, loan_date, due_date, status) 
+                                      VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'approved')");
+        $stmtInsert->execute([
+            $loan['loan_id'],
+            $loan['nrc'],
+            $loan['amount'],
+            $loan['purpose'],
+            $loan['weeks'],
+            $loan['repayment'],
+            $loan['loan_date'],
+            $loan['due_date']
+        ]);
+
+        // Delete loan from dueloans table
+        $stmtDelete = $pdo->prepare("DELETE FROM dueloans WHERE loan_id = ?");
+        $stmtDelete->execute([$loanId]);
+
+        echo "<script>alert('Loan has been restored to loan applications.'); window.location.href = 'loan_officer.php';</script>";
+    }
+}
 ?>
 
-<h2>Approved Loans</h2>
+<h2>Due Loans</h2>
 <input type="text" id="search" placeholder="Search by Loan ID or NRC" style="width: 100%; padding: 10px; margin-bottom: 20px;">
 
 <table id="loans-table">
@@ -159,13 +193,14 @@ $stmt = $pdo->query($sql); // Use $pdo instead of $conn
                 echo "<td>" . htmlspecialchars($row['loan_date']) . "</td>";
                 echo "<td>" . htmlspecialchars($row['due_date']) . "</td>";
                 echo "<td>
-                        <button class='action-btn approve'>Approve</button>
-                        <button class='action-btn dismiss'>Dismiss</button>
+                        <form method='POST' style='display:inline;'>
+                            <button type='submit' name='restore_loan_id' value='" . htmlspecialchars($row['loan_id']) . "' class='action-btn approve'>Restore</button>
+                        </form>
                       </td>";
                 echo "</tr>";
             }
         } else {
-            echo "<tr><td colspan='9'>No approved loans found</td></tr>";
+            echo "<tr><td colspan='9'>No due loans found</td></tr>";
         }
         ?>
     </tbody>
@@ -197,6 +232,9 @@ $stmt = $pdo->query($sql); // Use $pdo instead of $conn
         }
     });
 </script>
+
+
+
 
         </div>
     </section>

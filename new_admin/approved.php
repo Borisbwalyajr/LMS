@@ -1,3 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Admin Dashboard</title>
+    <style>
+        /* General Styles for the Table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-family: 'Arial', sans-serif;
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+/* Header Styles */
+th {
+    background-color: #4CAF50;
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+th:hover {
+    background-color: #45a049;
+}
+
+/* Row Styles */
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+tr:hover {
+    background-color: #e1e1e1;
+}
+
+tr td {
+    font-size: 14px;
+    color: #333;
+}
+
+/* Action Buttons Styles */
+.action-btn {
+    padding: 8px 15px;
+    margin: 5px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.action-btn.approve {
+    background-color: #28a745;
+    color: white;
+}
+
+.action-btn.approve:hover {
+    background-color: #218838;
+}
+
+.action-btn.dismiss {
+    background-color: #dc3545;
+    color: white;
+}
+
+.action-btn.dismiss:hover {
+    background-color: #c82333;
+}
+
+/* Search Input Field */
+#search {
+    padding: 10px;
+    width: 100%;
+    max-width: 300px;
+    margin-bottom: 20px;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+#search:focus {
+    border-color: #4CAF50;
+    outline: none;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    table {
+        font-size: 12px;
+    }
+
+    th, td {
+        padding: 10px 12px;
+    }
+
+    #search {
+        width: 100%;
+    }
+}
+</style>
+</head>
+
+<body>
+    
+   <?php
+   include 'sidebar.php';
+   ?>
+
+    <section class="dashboard">
+        <div class="container">
+            
 <?php
 // Include the database connection
 include 'connection.php';
@@ -76,3 +197,16 @@ $stmt = $pdo->query($sql); // Use $pdo instead of $conn
         }
     });
 </script>
+
+        </div>
+    </section>
+
+    <script src="index.js"></script>
+    
+    <!-- Sources for icons -->
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    
+</body>
+
+</html>

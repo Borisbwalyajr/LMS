@@ -7,7 +7,7 @@
         <div class="menu-items">
             <ul class="navLinks">
                 <li class="navList active">
-                    <a href="#">
+                    <a href="loan_officer.html">
                         <ion-icon name="home-outline"></ion-icon>
                         <span class="links">Dashboard</span>
                     </a>
