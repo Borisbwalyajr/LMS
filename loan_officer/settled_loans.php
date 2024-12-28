@@ -124,7 +124,7 @@ tr td {
 include 'connection.php';
 
 // Fetch loans with status "approved"
-$sql = "SELECT * FROM loan_applications WHERE status = 'approved'";
+$sql = "SELECT * FROM loan_applications WHERE status = 'completed'";
 $stmt = $pdo->query($sql);
 
 // Handle the approve action
@@ -177,7 +177,7 @@ if (isset($_POST['edit_loan_id']) && isset($_POST['new_amount'])) {
                 echo "<td>" . htmlspecialchars($row['due_date']) . "</td>";
                 echo "<td>
                         <form method='POST' style='display:inline;'>
-                            <button type='submit' name='approve_loan_id' value='" . htmlspecialchars($row['loan_id']) . "' class='action-btn approve'>Approve</button>
+                            <button type='submit' name='approve_loan_id' value='" . htmlspecialchars($row['loan_id']) . "' class='action-btn clear'>Restore</button>
                         </form>
                         <button class='action-btn dismiss' onclick='showEditForm(\"" . htmlspecialchars($row['loan_id']) . "\", \"" . htmlspecialchars($row['amount']) . "\")'>Edit</button>
                       </td>";

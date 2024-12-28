@@ -1,84 +1,91 @@
 <?php
-    include "../connection.php";
-    session_start();
-    if(!isset($_SESSION['user_id']))
-    {
-        echo "<script>
-                alert('Your are curretly not logged in!');
-                window.location.href='../index.html';
-            </script>";
-    }
+   include "../connection.php";
+   session_start();
 
-    $stmt = $pdo->prepare("SELECT * FROM registrations WHERE id_number = ?");
-    $stmt->execute([$_SESSION['user_id']]);
+   if (!isset($_SESSION['user_id'])) {
+       echo "<script>
+               alert('You are currently not logged in!');
+               window.location.href='../index.html';
+           </script>";
+       exit;
+   }
 
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+   // Fetch logged-in user details
+   $stmt = $pdo->prepare("SELECT * FROM registrations WHERE id_number = ?");
+   $stmt->execute([$_SESSION['user_id']]);
+   $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        // Sanitize and retrieve input data
-        $loanAmount = filter_input(INPUT_POST, 'loan_amount', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-        $purpose = htmlspecialchars($_POST['purpose'], ENT_QUOTES, 'UTF-8'); // Use htmlspecialchars for strings
-        $weeks = filter_input(INPUT_POST, 'weeks', FILTER_SANITIZE_NUMBER_INT);
-        $repayment = filter_input(INPUT_POST, 'repayment', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-    
-        // Calculate the due date
-        $loanDate = date('Y-m-d'); // Current date
-        $dueDate = date('Y-m-d', strtotime("+$weeks weeks")); // Add weeks to the current date
-        $loan_code = "FVL".random_int(10000,100000);
-        $status = "not approved";
-    
-        // Handle the file upload
-        if (isset($_FILES['collateral_image']) && $_FILES['collateral_image']['error'] == 0) {
-            $targetDir = "./img/collateral/";
-            $fileName = uniqid() . "-" . basename($_FILES['collateral_image']['name']);
-            $targetFilePath = $targetDir . $fileName;
-            $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
-    
-            // Move uploaded file to target directory
-            if (move_uploaded_file($_FILES['collateral_image']['tmp_name'], $targetFilePath)) {
-                try {
-                    // Prepare and execute the SQL query
-                    $stmt = $pdo->prepare("INSERT INTO loan_applications (loan_id, nrc, amount, purpose, weeks, repayment, collateral_image, loan_date, due_date,status) 
-                        VALUES (:loan, :nrc, :amount, :purpose, :weeks, :repayment, :collateral_image, :loan_date, :due_date, :status)");
+   // Check if the user has an active loan with "credited" status
+   $loanCheckStmt = $pdo->prepare("SELECT * FROM loan_applications WHERE nrc = ? AND status = 'credited'");
+   $loanCheckStmt->execute([$user["id_number"]]);
+   $activeLoan = $loanCheckStmt->fetch(PDO::FETCH_ASSOC);
 
-                    $stmt->bindParam(':loan', $loan_code); // Assuming `$user` contains the user's details
-                    $stmt->bindParam(':nrc', $user["id_number"]); // Assuming `$user` contains the user's details
-                    $stmt->bindParam(':amount', $loanAmount);
-                    $stmt->bindParam(':purpose', $purpose);
-                    $stmt->bindParam(':weeks', $weeks);
-                    $stmt->bindParam(':repayment', $repayment);
-                    $stmt->bindParam(':collateral_image', $fileName);
-                    $stmt->bindParam(':loan_date', $loanDate);
-                    $stmt->bindParam(':due_date', $dueDate);
-                    $stmt->bindParam(':status', $status);
-    
-                    if ($stmt->execute()) {
-                        echo "<script>
-                                alert('Loan Application Submitted Successfully!');
-                              </script>";
-                    } else {
-                        echo "<script>
-                                alert('Failed To Submit Loan!');
-                              </script>";
-                    }
-                } catch (PDOException $e) {
-                    echo "<script>
-                        alert('Failed To Upload Collateral Image!');
-                      </script>";
-                }
-            } else {
-                echo "<script>
-                        alert('Failed To Upload Collateral Image!');
-                      </script>";
-            }
-        } else {
-            echo "<script>
-                    alert('Please upload a valid collateral image!');
-                  </script>";
-        }
-    }
-    
+   if ($activeLoan) {
+       // If the user has an outstanding loan
+       $outstandingBalance = $activeLoan['repayment'];
+       echo "<script>
+               alert('You are still owing an outstanding balance of ZMW $outstandingBalance. Please clear it before applying for a new loan.');
+               window.location.href='repayment_page.php'; // Redirect to a repayment page or handle repayment process here
+           </script>";
+       exit;
+   }
+
+   if ($_SERVER["REQUEST_METHOD"] == "POST") {
+       // Existing loan application logic
+       $loanAmount = filter_input(INPUT_POST, 'loan_amount', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+       $purpose = htmlspecialchars($_POST['purpose'], ENT_QUOTES, 'UTF-8');
+       $weeks = filter_input(INPUT_POST, 'weeks', FILTER_SANITIZE_NUMBER_INT);
+       $repayment = filter_input(INPUT_POST, 'repayment', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+
+       $loanDate = date('Y-m-d'); // Current date
+       $dueDate = date('Y-m-d', strtotime("+$weeks weeks")); // Add weeks to the current date
+       $loan_code = "FVL" . random_int(10000, 100000);
+       $status = "not approved";
+
+       // File upload and insertion logic
+       if (isset($_FILES['collateral_image']) && $_FILES['collateral_image']['error'] == 0) {
+           $targetDir = "./img/collateral/";
+           $fileName = uniqid() . "-" . basename($_FILES['collateral_image']['name']);
+           $targetFilePath = $targetDir . $fileName;
+           $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
+
+           if (move_uploaded_file($_FILES['collateral_image']['tmp_name'], $targetFilePath)) {
+               $stmt = $pdo->prepare("INSERT INTO loan_applications (loan_id, nrc, amount, purpose, weeks, repayment, collateral_image, loan_date, due_date, status) 
+                   VALUES (:loan, :nrc, :amount, :purpose, :weeks, :repayment, :collateral_image, :loan_date, :due_date, :status)");
+
+               $stmt->bindParam(':loan', $loan_code);
+               $stmt->bindParam(':nrc', $user["id_number"]);
+               $stmt->bindParam(':amount', $loanAmount);
+               $stmt->bindParam(':purpose', $purpose);
+               $stmt->bindParam(':weeks', $weeks);
+               $stmt->bindParam(':repayment', $repayment);
+               $stmt->bindParam(':collateral_image', $fileName);
+               $stmt->bindParam(':loan_date', $loanDate);
+               $stmt->bindParam(':due_date', $dueDate);
+               $stmt->bindParam(':status', $status);
+
+               if ($stmt->execute()) {
+                   echo "<script>
+                           alert('Loan Application Submitted Successfully!');
+                         </script>";
+               } else {
+                   echo "<script>
+                           alert('Failed To Submit Loan!');
+                         </script>";
+               }
+           } else {
+               echo "<script>
+                       alert('Failed To Upload Collateral Image!');
+                     </script>";
+           }
+       } else {
+           echo "<script>
+                   alert('Please upload a valid collateral image!');
+                 </script>";
+       }
+   }
 ?>
+
 <!doctype html>
 <html class="no-js" lang="zxx">
 

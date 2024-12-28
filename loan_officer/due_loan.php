@@ -124,8 +124,8 @@ tr td {
 // Include the database connection
 include 'connection.php';
 
-// Fetch loans with status "approved"
-$sql = "SELECT * FROM loan_applications WHERE status = 'approved'";
+// Fetch loans where the due date is less than or equal to the current date
+$sql = "SELECT * FROM loan_applications WHERE status = 'approved' AND due_date <= CURDATE()";
 $stmt = $pdo->query($sql); // Use $pdo instead of $conn
 
 // Check if seize action is triggered
@@ -198,7 +198,7 @@ if (isset($_POST['seize_loan_id'])) {
                 echo "</tr>";
             }
         } else {
-            echo "<tr><td colspan='9'>No approved loans found</td></tr>";
+            echo "<tr><td colspan='9'>No due loans found</td></tr>";
         }
         ?>
     </tbody>

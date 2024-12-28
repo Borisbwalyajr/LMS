@@ -124,41 +124,39 @@ tr td {
 include 'connection.php';
 
 // Fetch loans with status "approved"
-$sql = "SELECT * FROM loan_applications WHERE status = 'approved'";
+$sql = "SELECT * FROM transactions WHERE status = 'pending'";
 $stmt = $pdo->query($sql);
 
 // Handle the approve action
-if (isset($_POST['approve_loan_id'])) {
-    $loanId = $_POST['approve_loan_id'];
-    $updateStatus = $pdo->prepare("UPDATE loan_applications SET status = 'credited' WHERE loan_id = ?");
+if (isset($_POST['id'])) {
+    $loanId = $_POST['id'];
+    $updateStatus = $pdo->prepare("UPDATE transactions SET status = 'paid' WHERE id = ?");
     $updateStatus->execute([$loanId]);
-    echo "<script>alert('Loan status updated to credited.'); window.location.reload();</script>";
+    echo "<script>alert('Status updated to credited.'); window.location.reload();</script>";
 }
 
 // Handle the edit action
 if (isset($_POST['edit_loan_id']) && isset($_POST['new_amount'])) {
     $loanId = $_POST['edit_loan_id'];
     $newAmount = $_POST['new_amount'];
-    $updateAmount = $pdo->prepare("UPDATE loan_applications SET amount = ? WHERE loan_id = ?");
+    $updateAmount = $pdo->prepare("UPDATE transactions SET amount = ? WHERE id = ?");
     $updateAmount->execute([$newAmount, $loanId]);
-    echo "<script>alert('Loan amount updated successfully.'); window.location.reload();</script>";
+    echo "<script>alert('updated successfully.'); window.location.reload();</script>";
 }
 ?>
 
 <h2>Approved Loans</h2>
-<input type="text" id="search" placeholder="Search by Loan ID or NRC" style="width: 100%; padding: 10px; margin-bottom: 20px;">
+<input type="text" id="search" placeholder="Search by ID or NRC" style="width: 100%; padding: 10px; margin-bottom: 20px;">
 
 <table id="loans-table">
     <thead>
         <tr>
-            <th>Loan ID</th>
-            <th>User NRC</th>
+            
             <th>Amount</th>
             <th>Purpose</th>
-            <th>Weeks</th>
-            <th>Repayment</th>
-            <th>Loan Date</th>
-            <th>Due Date</th>
+            <th>Phone Number</th>
+            <th>To</th>
+            <th>Paid Date</th>
             <th>Action</th>
         </tr>
     </thead>
@@ -167,24 +165,24 @@ if (isset($_POST['edit_loan_id']) && isset($_POST['new_amount'])) {
         if ($stmt->rowCount() > 0) {
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 echo "<tr>";
-                echo "<td>" . htmlspecialchars($row['loan_id']) . "</td>";
-                echo "<td>" . htmlspecialchars($row['nrc']) . "</td>";
-                echo "<td>ZMW" . htmlspecialchars($row['amount']) . "</td>";
+                
+                echo "<td>ZMK" . htmlspecialchars($row['amount']) . "</td>";
                 echo "<td>" . htmlspecialchars($row['purpose']) . "</td>";
-                echo "<td>" . htmlspecialchars($row['weeks']) . "</td>";
-                echo "<td>ZMW" . htmlspecialchars($row['repayment']) . "/month</td>";
-                echo "<td>" . htmlspecialchars($row['loan_date']) . "</td>";
-                echo "<td>" . htmlspecialchars($row['due_date']) . "</td>";
+                echo "<td>" . htmlspecialchars($row['phone_number']) . "</td>";
+                echo "<td>" . htmlspecialchars($row['signature']) . "</td>";
+              
+                echo "<td>" . htmlspecialchars($row['date']) . "</td>";
+              
                 echo "<td>
                         <form method='POST' style='display:inline;'>
-                            <button type='submit' name='approve_loan_id' value='" . htmlspecialchars($row['loan_id']) . "' class='action-btn approve'>Approve</button>
+                            <button type='submit' name='id' value='" . htmlspecialchars($row['id']) . "' class='action-btn approve'>Approve</button>
                         </form>
-                        <button class='action-btn dismiss' onclick='showEditForm(\"" . htmlspecialchars($row['loan_id']) . "\", \"" . htmlspecialchars($row['amount']) . "\")'>Edit</button>
+                        <button class='action-btn dismiss' onclick='showEditForm(\"" . htmlspecialchars($row['id']) . "\", \"" . htmlspecialchars($row['amount']) . "\")'>Edit</button>
                       </td>";
                 echo "</tr>";
             }
         } else {
-            echo "<tr><td colspan='9'>No approved loans found</td></tr>";
+            echo "<tr><td colspan='9'>No Pending Transactions</td></tr>";
         }
         ?>
     </tbody>
@@ -193,7 +191,7 @@ if (isset($_POST['edit_loan_id']) && isset($_POST['new_amount'])) {
 <!-- Edit Modal -->
 <div id="edit-modal" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); padding:20px; background:white; border:1px solid #ddd; border-radius:5px;">
     <form method="POST">
-        <h3>Edit Loan Amount</h3>
+        <h3>Edit The Transaction</h3>
         <input type="hidden" name="edit_loan_id" id="edit-loan-id">
         <label for="new-amount">New Amount:</label>
         <input type="number" name="new_amount" id="new-amount" required>

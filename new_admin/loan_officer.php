@@ -7,6 +7,91 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <title>Admin Dashboard</title>
+</head>
+
+<body>
+    <?php
+    include 'sidebar.php';
+
+    // Database connection
+    $servername = "localhost";
+    $username = "root";
+    $password = "";
+    $database = "loan_db";
+
+    $conn = new mysqli($servername, $username, $password, $database);
+
+    // Check connection
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+
+    // Queries to get values
+    // Total Income
+    $totalIncomeQuery = "SELECT SUM(repayment) AS total_income FROM loan_applications";
+    $totalIncomeResult = $conn->query($totalIncomeQuery);
+    $totalIncome = $totalIncomeResult->fetch_assoc()['total_income'];
+
+    // Active Loans
+    $activeLoansQuery = "SELECT COUNT(*) AS active_loans FROM loan_applications WHERE status = 'approved'";
+    $activeLoansResult = $conn->query($activeLoansQuery);
+    $activeLoans = $activeLoansResult->fetch_assoc()['active_loans'];
+
+    // Pending Loans
+    $pendingLoansQuery = "SELECT COUNT(*) AS pending_loans FROM loan_applications WHERE status = 'credited'";
+    $pendingLoansResult = $conn->query($pendingLoansQuery);
+    $pendingLoans = $pendingLoansResult->fetch_assoc()['pending_loans'];
+
+    // Overdue Notifications
+    /*$overdueNotificationsQuery = "SELECT COUNT(*) AS overdue_notifications FROM notifications WHERE status = 'overdue'";
+    $overdueNotificationsResult = $conn->query($overdueNotificationsQuery);
+    $overdueNotifications = $overdueNotificationsResult->fetch_assoc()['overdue_notifications'];
+*/
+    // Close the database connection
+    $conn->close();
+    ?>
+
+    <section class="dashboard">
+        <div class="container">
+            <div class="overview">
+                <div class="title">
+                    <ion-icon name="speedometer"></ion-icon>
+                    <span class="text">Dashboard</span>
+                </div>
+                <div class="boxes">
+                    <div class="box box1">
+                        <ion-icon name="eye-outline"></ion-icon>
+                        <span class="text">Income</span>
+                        <span class="number"><?php echo number_format($totalIncome, 2); ?></span>
+                    </div>
+                    <div class="box box2">
+                        <ion-icon name="people-outline"></ion-icon>
+                        <span class="text">Active Loans</span>
+                        <span class="number"><?php echo $activeLoans; ?></span>
+                    </div>
+                    <div class="box box3">
+                        <ion-icon name="chatbubbles-outline"></ion-icon>
+                        <span class="text">Pending Loans</span>
+                        <span class="number"><?php echo $pendingLoans; ?></span>
+                    </div>
+                    <div class="box box4">
+                        <ion-icon name="chatbubbles-outline"></ion-icon>
+                        <span class="text">Overdue Notifications</span>
+                        <span class="number">23</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activities -->
+            <div class="data-table activityTable">
+                <div class="title">
+                    <ion-icon name="time-outline"></ion-icon>
+                    <span class="text">Recent Activities</span>
+                </div>
+                <div>
+                    <!-- Enter any table or section here -->
+                    <!DOCTYPE html>
+
     <style>
         /* General Styles for the Table */
 table {
@@ -108,23 +193,16 @@ tr td {
     }
 }
 </style>
-</head>
 
-<body>
+
     
-   <?php
-   include 'sidebar.php';
-   ?>
-
-    <section class="dashboard">
-        <div class="container">
             
         <?php
 // Include the database connection
 include 'connection.php';
 
 // Fetch loans with status "approved"
-$sql = "SELECT * FROM loan_applications WHERE status = 'approved'";
+$sql = "SELECT * FROM loan_applications WHERE status = 'not approv'";
 $stmt = $pdo->query($sql);
 
 // Handle the approve action
@@ -144,10 +222,6 @@ if (isset($_POST['edit_loan_id']) && isset($_POST['new_amount'])) {
     echo "<script>alert('Loan amount updated successfully.'); window.location.reload();</script>";
 }
 ?>
-
-<h2>Approved Loans</h2>
-<input type="text" id="search" placeholder="Search by Loan ID or NRC" style="width: 100%; padding: 10px; margin-bottom: 20px;">
-
 <table id="loans-table">
     <thead>
         <tr>
@@ -184,7 +258,7 @@ if (isset($_POST['edit_loan_id']) && isset($_POST['new_amount'])) {
                 echo "</tr>";
             }
         } else {
-            echo "<tr><td colspan='9'>No approved loans found</td></tr>";
+            echo "<tr><td colspan='9'>No pending loans found</td></tr>";
         }
         ?>
     </tbody>
@@ -243,6 +317,61 @@ if (isset($_POST['edit_loan_id']) && isset($_POST['new_amount'])) {
 </script>
 
 
+        </div>
+    </section>
+
+    <script src="index.js"></script>
+    
+    <!-- Sources for icons -->
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+                </div>
+            </div>
+
+            <!-- Content -->
+            <div style="display:none" class="data-table userDetailsTable">
+                <div class="title">
+                    <ion-icon name="folder-outline"></ion-icon>
+                    <span class="text">Content</span>
+                </div>
+                <div>
+                    <!-- Enter any table or section here -->
+                </div>
+            </div>
+
+            <!-- Analytics -->
+            <div style="display:none" class="data-table EditUserRole">
+                <div class="title">
+                    <ion-icon name="analytics-outline"></ion-icon>
+                    <span class="text">Analytics</span>
+                </div>
+                <div>
+                    <!-- Enter any table or section here -->
+                </div>
+            </div>
+
+            <!-- Likes -->
+            <div style="display:none" class="data-table VehicleDetails">
+                <div class="title">
+                    <ion-icon name="heart-outline"></ion-icon>
+                    <span class="text">Vehicles</span>
+                </div>
+                <div>
+                    <!-- Enter any table or section here -->
+                </div>
+            </div>
+
+            <!-- Downloads section -->
+            <div style="display:none" class="data-table downloads">
+                <div class="title">
+                    <ion-icon name="chatbubbles-outline"></ion-icon>
+                    <span class="text">Comments</span>
+                </div>
+                <div>
+                    <!-- Enter any table or section here -->
+                </div>
+            </div>
         </div>
     </section>
 
