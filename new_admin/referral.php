@@ -11,7 +11,7 @@
         /* General form styling */
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #f4f7fa;
+    background-color:rgb(15, 79, 143);
     margin: 0;
     padding: 0;
 }

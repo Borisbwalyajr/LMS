@@ -6,6 +6,7 @@
   padding: 0;
   box-sizing: border-box;
   font-family: "Poppins", sans-serif;
+  background-color: #4070f4;
 }
 
 body {
@@ -21,7 +22,7 @@ body {
   position: relative;
   max-width: 850px;
   width: 100%;
-  background: #fff;
+  background-color: #4070f4;
   padding: 40px 30px;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
   perspective: 2700px;

@@ -62,7 +62,7 @@ $conn->close();
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f9;
+            background-color:rgb(13, 13, 167);
             display: flex;
             justify-content: center;
             align-items: center;

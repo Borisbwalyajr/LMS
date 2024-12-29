@@ -25,14 +25,14 @@ th, td {
 
 /* Header Styles */
 th {
-    background-color: #4CAF50;
+    background-color:rgb(44, 8, 173);
     color: white;
     font-weight: bold;
     font-size: 16px;
 }
 
 th:hover {
-    background-color: #45a049;
+    background-color:rgb(66, 24, 179);
 }
 
 /* Row Styles */
@@ -162,7 +162,7 @@ if (isset($_POST['restore_loan_id'])) {
 }
 ?>
 
-<h2>Due Loans</h2>
+<h2>Seized Loans</h2>
 <input type="text" id="search" placeholder="Search by Loan ID or NRC" style="width: 100%; padding: 10px; margin-bottom: 20px;">
 
 <table id="loans-table">

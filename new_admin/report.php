@@ -23,8 +23,8 @@ try {
     <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.print.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
 </head>
-<body>
-    <div align="center" class="container mt-5">
+<body style="background-color:">
+    <div align="center" class="container mt-5" >
         <h5 align="center">Summary Report by Date & Activity Filter</h5><br>
         <h6 align="center">Search Date Range</h6><br>
         <form id="filterForm" class="myForm" method="post">
@@ -75,7 +75,7 @@ try {
             <table id="table" class="display nowrap" cellspacing="0" style="width:100%">
                 <thead align="center">
                     <tr>
-                        <td>Loan ID</td>
+                      
                         <td>NRC</td>
                         <td>Amount</td>
                         <td>Purpose</td>
@@ -131,7 +131,7 @@ try {
                     }
                 },
                 columns: [
-                    { data: 'loan_id' },
+                   
                     { data: 'nrc' },
                     { data: 'amount' },
                     { data: 'purpose' },

@@ -8,7 +8,7 @@
 
 body {
     width: 100%;
-    background-color: #e6f2ff;
+    background-color: blue;
     font-family: 'Poppins', sans-serif;
 }
 
@@ -69,18 +69,18 @@ nav .menu-items li.active a {
 }
 
 nav .menu-items li a ion-icon {
-    color: white;
+    color: blue;
     font-size: 24px;
     min-width: 45px;
 }
 
 nav .menu-items li a .links {
     font-size: 18px;
-    color: white;
+    color: blue;
 }
 
 nav .menu-items li.active a {
-    background-color: #e6f2ff;
+    background-color: blue;
 }
 
 nav .menu-items li.active a:before {
@@ -91,7 +91,7 @@ nav .menu-items li.active a:before {
     right: 0;
     top: -40px;
     border-radius: 50%;
-    box-shadow: 20px 20px #e6f2ff;
+    box-shadow: 20px 20px blue;
     pointer-events: none;
 }
 
@@ -103,7 +103,7 @@ nav .menu-items li.active a:after {
     right: 0;
     bottom: -40px;
     border-radius: 50%;
-    box-shadow: 20px -20px #e6f2ff;
+    box-shadow: 20px -20px blue;
     pointer-events: none;
 }
 
@@ -121,7 +121,7 @@ nav .menu-items li.active a ion-icon {
     left: 250px;
     width: calc(100% - 250px);
     min-height: 100vh;
-    background-color: #e6f2ff;
+    background-color: blue;
     padding: 0px 15px;
 }
 
@@ -141,7 +141,7 @@ nav .menu-items li.active a ion-icon {
     height: 35px;
     padding: 5px;
     background-color: #1d64c2;
-    color: White;
+    color: blue;
     border-radius: 6px;
 }
 
@@ -165,7 +165,7 @@ nav .menu-items li.active a ion-icon {
     width: calc(100%/4 - 15px);
     padding: 15px 20px;
     border-radius: 10px;
-    background-color: #9cdef5;
+    background-color: blue;
 }
 
 .boxes .box ion-icon {
@@ -284,7 +284,7 @@ padding: 0px 20px 40px 70px;
     width: 300px;
     padding: 10px;
     background-color: #1d64c2;
-    color: white;
+    color: rgb(58, 13, 180);
     border: none;
     border-radius: 10px;
     cursor: pointer;

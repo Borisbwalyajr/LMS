@@ -24,14 +24,14 @@ th, td {
 
 /* Header Styles */
 th {
-    background-color: #4CAF50;
+    background-color:rgb(37, 19, 199);
     color: white;
     font-weight: bold;
     font-size: 16px;
 }
 
 th:hover {
-    background-color: #45a049;
+    background-color:rgb(79, 29, 214);
 }
 
 /* Row Styles */
@@ -145,7 +145,7 @@ if (isset($_POST['edit_loan_id']) && isset($_POST['new_amount'])) {
 }
 ?>
 
-<h2>Approved Loans</h2>
+<h2>Settled Loans</h2>
 <input type="text" id="search" placeholder="Search by Loan ID or NRC" style="width: 100%; padding: 10px; margin-bottom: 20px;">
 
 <table id="loans-table">

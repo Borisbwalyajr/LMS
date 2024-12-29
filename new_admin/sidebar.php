@@ -11,18 +11,20 @@
             margin: 0;
             padding: 0;
             font-family: Arial, sans-serif;
+            background-color:blue;
+
         }
 
         nav {
             width: 250px;
             height: 100vh;
-            background-color: #2c3e50;
+            background-color:blue;
             color: #fff;
             position: fixed;
             top: 0;
             left: 0;
             padding-top: 20px;
-            box-shadow: 2px 0px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: blue;
         }
 
         .logo img {
@@ -52,8 +54,8 @@
         }
 
         .navList a:hover, .navList.active a {
-            background-color: #34495e;
-            color: #ecf0f1;
+            background-color:blue;
+            color: blue;
         }
 
         .navList a ion-icon {
@@ -61,14 +63,14 @@
         }
 
         .dropdown-menu {
-            background-color: #34495e;
+            background-color:blue;
             border-radius: 5px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: blue;
             min-width: 200px;
         }
 
         .dropdown-item {
-            color: #fff;
+            color: blue;
             font-size: 1rem;
             padding: 12px 20px;
             text-decoration: none;
@@ -76,7 +78,7 @@
         }
 
         .dropdown-item:hover {
-            background-color: #1abc9c;
+            background-color:rgb(88, 18, 219);
         }
 
         /* Styling the bottom links (Profile, Logout) */
@@ -96,7 +98,7 @@
         }
 
         .bottom-link li a:hover {
-            background-color: #34495e;
+            background-color:rgb(34, 132, 230);
         }
 
         .bottom-link li a ion-icon {
@@ -109,7 +111,7 @@
     <nav>
         <div class="logo">
             <div class="logo-image">
-                <img src="logo.png" alt="Logo">
+                <img src="img/logo.jpg" alt="Logo">
             </div>
         </div>
         <div class="menu-items">
@@ -126,12 +128,12 @@
                         <span class="links">Pending Loans</span>
                     </a>
                 </li>
-                <li class="navList dropdown">
+                <li class="navList dropdown" style="background-color:blue">
                     <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                         <ion-icon name="analytics-outline"></ion-icon>
                         <span class="links">Analytics</span>
                     </a>
-                    <ul class="dropdown-menu">
+                    <ul class="dropdown-menu" style="background-color:blue">
                         <li><a class="dropdown-item" href="approved.php">
                             <ion-icon name="heart-outline"></ion-icon>
                             <span class="links">Approved Loans</span>

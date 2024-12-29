@@ -24,14 +24,14 @@ th, td {
 
 /* Header Styles */
 th {
-    background-color: #4CAF50;
+    background-color:rgb(58, 22, 190);
     color: white;
     font-weight: bold;
     font-size: 16px;
 }
 
 th:hover {
-    background-color: #45a049;
+    background-color:rgb(42, 16, 190);
 }
 
 /* Row Styles */

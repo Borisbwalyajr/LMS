@@ -14,6 +14,7 @@ table {
     border-collapse: collapse;
     margin: 20px 0;
     font-family: 'Arial', sans-serif;
+    background-color:blue;
 }
 
 th, td {
@@ -24,19 +25,19 @@ th, td {
 
 /* Header Styles */
 th {
-    background-color: #4CAF50;
+    background-color:rgb(55, 17, 161);
     color: white;
     font-weight: bold;
     font-size: 16px;
 }
 
 th:hover {
-    background-color: #45a049;
+    background-color:rgb(44, 33, 207);
 }
 
 /* Row Styles */
 tr:nth-child(even) {
-    background-color: #f2f2f2;
+    background-color:rgb(60, 15, 163);
 }
 
 tr:hover {
@@ -74,7 +75,7 @@ tr td {
 }
 
 .action-btn.dismiss:hover {
-    background-color: #c82333;
+    background-color: blue;
 }
 
 /* Search Input Field */
@@ -89,7 +90,7 @@ tr td {
 }
 
 #search:focus {
-    border-color: #4CAF50;
+    border-color: blue;
     outline: none;
 }
 

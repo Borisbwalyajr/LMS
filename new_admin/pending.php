@@ -25,14 +25,14 @@ th, td {
 
 /* Header Styles */
 th {
-    background-color: #4CAF50;
+    background-color:rgb(60, 11, 173);
     color: white;
     font-weight: bold;
     font-size: 16px;
 }
 
 th:hover {
-    background-color: #45a049;
+    background-color:rgb(17, 13, 211);
 }
 
 /* Row Styles */
@@ -90,7 +90,7 @@ tr td {
 }
 
 #search:focus {
-    border-color: #4CAF50;
+    border-color:rgb(85, 16, 175);
     outline: none;
 }
 

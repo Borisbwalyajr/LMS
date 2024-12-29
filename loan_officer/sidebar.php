@@ -11,12 +11,14 @@
             margin: 0;
             padding: 0;
             font-family: Arial, sans-serif;
+            background-color:blue;
+
         }
 
         nav {
             width: 250px;
             height: 100vh;
-            background-color: #2c3e50;
+            background-color:blue;
             color: #fff;
             position: fixed;
             top: 0;
@@ -96,7 +98,7 @@
         }
 
         .bottom-link li a:hover {
-            background-color: #34495e;
+            background-color:rgb(34, 132, 230);
         }
 
         .bottom-link li a ion-icon {
@@ -109,7 +111,7 @@
     <nav>
         <div class="logo">
             <div class="logo-image">
-                <img src="logo.png" alt="Logo">
+                <img src="img/logo.jpg" alt="Logo">
             </div>
         </div>
         <div class="menu-items">
