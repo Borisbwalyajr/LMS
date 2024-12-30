@@ -178,7 +178,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="logout.php">
                         <ion-icon name="log-out-outline"></ion-icon>
                         <span class="links">Logout</span>
                     </a>

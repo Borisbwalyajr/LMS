@@ -1,24 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <title>Admin Dashboard</title>
-</head>
-
-<body>
-    
-   <?php
-   include 'sidebar.php';
-   ?>
-
-    <section class="dashboard">
-        <div class="container">
-            
-        <?php
+<?php
 session_start();
 include 'connection.php'; // Include your DB connection file
 
@@ -56,13 +36,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <title>Edit Profile</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    
 </head>
+
 <body>
+    
+   <?php
+   include 'sidebar.php';
+   ?>
+
+    <section class="dashboard">
+        
     <div class="container mt-5">
         <h2>Edit Profile</h2>
         <?php if (isset($success)) { echo "<div class='alert alert-success'>$success</div>"; } ?>

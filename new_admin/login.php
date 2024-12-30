@@ -3,10 +3,10 @@
 session_start();
 
 // Database connection
-$servername = "localhost"; // Replace with your database host
-$username = "root";        // Replace with your database username
-$password = "";            // Replace with your database password
-$dbname = "loan_db"; // Replace with your database name
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "loan_db";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
@@ -17,25 +17,41 @@ if ($conn->connect_error) {
 
 // Check if form is submitted
 if (isset($_POST['login'])) {
-    $user = $_POST['username'];
-    $pass = $_POST['password'];
+    $user = trim($_POST['username']);
+    $pass = trim($_POST['password']);
 
-    // SQL query to check user credentials
+    // SQL query to check user credentials and retrieve status
     $sql = "SELECT * FROM users WHERE username = ? AND password = ?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ss", $user, $pass); // "ss" for two string parameters
+    $stmt->bind_param("ss", $user, $pass);
     $stmt->execute();
     $result = $stmt->get_result();
 
     if ($result->num_rows > 0) {
-        // Valid credentials, start a session
+        // Fetch user data
+        $row = $result->fetch_assoc();
+        $user_id = $row['id']; // Assuming the table has an 'id' column
+        $status = $row['type']; // Assuming the table has a 'type' column
+
+        // Store user info in the session
+        $_SESSION['user_id'] = $user_id;
         $_SESSION['username'] = $user;
-        header("Location: loan_officer.php"); // Redirect to admin dashboard
+        $_SESSION['type'] = $status;
+
+        // Redirect based on user type
+        if ($status == 1) {
+            header("Location: admin_dashboard.php");
+        } elseif ($status == 2) {
+            header("Location: loan_officer/staff_dashboard.php");
+        } else {
+            echo "<script>alert('User type not recognized'); window.location.href='index.html';</script>";
+        }
         exit();
     } else {
         // Invalid credentials
         echo "<script>alert('Invalid Username or Password'); window.location.href='index.html';</script>";
     }
 }
+
 $conn->close();
 ?>

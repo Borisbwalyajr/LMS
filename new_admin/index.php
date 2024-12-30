@@ -1,8 +1,3 @@
-<?php
-if (isset($_GET['logout']) && $_GET['logout'] == 'success') {
-    echo '<div style="color: green; text-align: center; margin-top: 10px;">You have successfully logged out.</div>';
-}
-?>
 
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
