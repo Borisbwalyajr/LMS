@@ -93,6 +93,10 @@
                     <!DOCTYPE html>
 
     <style>
+        
+body{
+    background-color:;
+}
         /* General Styles for the Table */
 table {
     width: 100%;
@@ -109,23 +113,23 @@ th, td {
 
 /* Header Styles */
 th {
-    background-color: #4CAF50;
+    background-color: blue;
     color: white;
     font-weight: bold;
     font-size: 16px;
 }
 
 th:hover {
-    background-color: #45a049;
+    background-color: blue;
 }
 
 /* Row Styles */
 tr:nth-child(even) {
-    background-color: #f2f2f2;
+    background-color:blue;
 }
 
 tr:hover {
-    background-color: #e1e1e1;
+    background-color: blue;
 }
 
 tr td {
@@ -145,7 +149,7 @@ tr td {
 }
 
 .action-btn.approve {
-    background-color: #28a745;
+    background-color:blue;
     color: white;
 }
 
@@ -154,7 +158,7 @@ tr td {
 }
 
 .action-btn.dismiss {
-    background-color: #dc3545;
+    background-color: blue;
     color: white;
 }
 
@@ -258,7 +262,7 @@ if (isset($_POST['edit_loan_id']) && isset($_POST['new_amount'])) {
                 echo "</tr>";
             }
         } else {
-            echo "<tr><td colspan='9'>No approved loans found</td></tr>";
+            echo "<tr><td colspan='9'>No pending loans found</td></tr>";
         }
         ?>
     </tbody>
