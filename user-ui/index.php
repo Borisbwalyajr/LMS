@@ -40,6 +40,79 @@
     <link rel="stylesheet" href="css/slicknav.css">
 
     <link rel="stylesheet" href="css/style.css">
+    <style>
+   body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+.chat-popup {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #0078d7;
+    color: #fff;
+    padding: 15px 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 1000;
+    cursor: pointer;
+    animation: bounce 1s infinite;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.chat-popup a {
+    color: #fff;
+    text-decoration: ;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.chat-popup a:hover {
+    color: #ffd700;
+}
+
+.chat-popup span {
+    font-size: 18px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.chat-popup.hidden {
+    transform: translateY(100%);
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Keyframes for bounce animation */
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* Optional pulsing effect for attention */
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 10px rgba(0, 120, 215, 0.5);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(0, 120, 215, 0.8);
+    }
+    100% {
+        box-shadow: 0 0 10px rgba(0, 120, 215, 0.5);
+    }
+}
+
+        </style>
 </head>
 
 <body>
@@ -62,9 +135,9 @@
                                 <div class="main-menu  d-none d-lg-block">
                                     <nav>
                                         <ul id="navigation">
-                                            <li><a href="index.php#">home</a></li>
+                                            <li><a href="index.php#">Home</a></li>
                                             <li><a href="index.php#offer">Our Offer</a></li>
-                                            <li><a href="index.php#about">about</a></li>
+                                            <li><a href="index.php#about">About</a></li>
                                             <li><a href="index.php#how">How It Works</a></li>
                                             <li><a href="contact.html">Contact</a></li>
                                         </ul>
@@ -92,7 +165,10 @@
         </div>
     </header>
     <!-- header-end -->
-
+    <div id="chat-popup" class="chat-popup">
+        <p>Need help? <a href=""chat.php id="start-chat">Chat with us!</a></p>
+        <span id="close-popup">&times;</span>
+    </div>
     <!-- slider_area_start -->
     <div class="slider_area">
         <div class="single_slider  d-flex align-items-center slider_bg_1">
@@ -224,8 +300,8 @@
                         <div class="service_content">
                             <ul>
                                 <li> Borrow - 1,000 over 1 week </li>
-                                <li> Interest rate - 30% pa fixed</li>
-                                <li>Total amount payable - ZMW1,300</li>
+                                
+                                <p>Total amount payable - ZMW1,300</p>
                             </ul>
                             <div class="apply_btn">
                                 <button class="boxed-btn3" type="submit">Apply Now</button>
@@ -246,8 +322,8 @@
                         <div class="service_content">
                             <ul>
                                 <li> Borrow - 1,000 over 2 weeks </li>
-                                <li> Interest rate - 35% pa fixed</li>
-                                <li>Total amount payable - ZMW1,350</li>
+                               
+                                <p>Total amount payable - ZMW1,350</p>
                             </ul>
                             <div class="apply_btn">
                                 <button class="boxed-btn3" type="submit">Apply Now</button>
@@ -268,8 +344,8 @@
                         <div class="service_content">
                             <ul>
                                 <li> Borrow - 1,000 over 3 weeks </li>
-                                <li> Interest rate - 40% pa fixed</li>
-                                <li>Total amount payable - ZMW1,400</li>
+                                
+                                <p>Total amount payable - ZMW1,400</p>
                             </ul>
                             <div class="apply_btn">
                                 <button class="boxed-btn3" type="submit">Apply Now</button>
@@ -290,8 +366,7 @@
                         <div class="service_content">
                             <ul>
                                 <li> Borrow - 1,000 over 4 weeks </li>
-                                <li> Interest rate - 45% pa fixed</li>
-                                <li>Total amount payable - ZMW1,450</li>
+                                <p>Total amount payable - ZMW1,450</p>
                             </ul>
                             <div class="apply_btn">
                                 <button class="boxed-btn3" type="submit">Apply Now</button>
@@ -500,6 +575,31 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
         </div>
     </footer>
     <!--/ footer end  -->
+    <script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const chatPopup = document.getElementById("chat-popup");
+        const closePopup = document.getElementById("close-popup");
+        const startChat = document.getElementById("start-chat");
+
+        // Show the popup after a delay
+        setTimeout(() => {
+            chatPopup.classList.remove("hidden");
+        }, 3000); // Show after 3 seconds
+
+        // Close the popup when the "×" is clicked
+        closePopup.addEventListener("click", () => {
+            chatPopup.classList.add("hidden");
+        });
+
+        // Handle the chat link click
+        startChat.addEventListener("click", (e) => {
+            e.preventDefault();
+            // Redirect to chat.php
+            window.location.href = "chat.php";
+        });
+    });
+</script>
+
 
     <!-- link that opens popup -->
     <!-- JS here -->

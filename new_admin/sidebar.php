@@ -173,6 +173,12 @@
                     </a>
                 </li>
                 <li>
+                    <a href="admin.php">
+                        <ion-icon name="person-circle-outline"></ion-icon>
+                        <span class="links">Queries</span>
+                    </a>
+                </li>
+                <li>
                     <a href="profile.php">
                         <ion-icon name="person-circle-outline"></ion-icon>
                         <span class="links">Profile</span>

@@ -65,6 +65,15 @@
             background-color: #0056b3;
         }
 
+        .action-btn.view {
+            background-color: #ffc107;
+            color: black;
+        }
+
+        .action-btn.view:hover {
+            background-color: #e0a800;
+        }
+
         #search {
             padding: 10px;
             width: 100%;
@@ -74,43 +83,13 @@
             border-radius: 5px;
             font-size: 14px;
         }
-
-        #payment-history-modal {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: white;
-            border: 1px solid #ccc;
-            padding: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            z-index: 1000;
-        }
-
-        #payment-history-modal h3 {
-            margin-bottom: 10px;
-        }
-
-        #modal-close {
-            background-color: #dc3545;
-            color: white;
-            padding: 8px 15px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        #modal-close:hover {
-            background-color: #c82333;
-        }
     </style>
 </head>
 
 <body>
     <?php include 'sidebar.php'; ?>
 
-    <section class="dashboard">
+    <main class="dashboard">
         <div class="container">
 
             <?php
@@ -123,7 +102,7 @@
             <h2>Pending Loans</h2>
             <input type="text" id="search" placeholder="Search by Loan ID or NRC">
 
-            <table id="loans-table">
+            <table id="loans-table" aria-label="Pending Loans Table">
                 <thead>
                     <tr>
                         <th>Loan ID</th>
@@ -141,7 +120,7 @@
                     <?php
                     if ($stmt->rowCount() > 0) {
                         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                            echo "<tr data-loan-id='" . htmlspecialchars($row['loan_id']) . "'>";
+                            echo "<tr>";
                             echo "<td>" . htmlspecialchars($row['loan_id']) . "</td>";
                             echo "<td>" . htmlspecialchars($row['nrc']) . "</td>";
                             echo "<td>ZMW" . htmlspecialchars($row['amount']) . "</td>";
@@ -152,7 +131,7 @@
                             echo "<td>" . htmlspecialchars($row['due_date']) . "</td>";
                             echo "<td>
                                     <button class='action-btn approve'>Settled</button>
-                                    <button class='action-btn dismiss'>Check</button>
+                                    <a href='view_payment_history.php?loan_id=" . htmlspecialchars($row['loan_id']) . "' class='action-btn view'>View</a>
                                   </td>";
                             echo "</tr>";
                         }
@@ -163,84 +142,7 @@
                 </tbody>
             </table>
         </div>
-    </section>
-
-    <!-- Modal for Payment History -->
-    <div id="payment-history-modal">
-        <h3>Payment History</h3>
-        <table>
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Amount</th>
-                </tr>
-            </thead>
-            <tbody id="payment-history-content">
-            </tbody>
-        </table>
-        <button id="modal-close">Close</button>
-    </div>
-
-    <script>
-        // Mark loan as completed
-        document.querySelectorAll('.action-btn.approve').forEach(button => {
-            button.addEventListener('click', function () {
-                const loanId = this.closest('tr').dataset.loanId;
-
-                if (confirm('Mark this loan as completed?')) {
-                    fetch('update_status.php', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ loan_id: loanId, status: 'completed' })
-                    })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                alert('Loan marked as completed');
-                                location.reload();
-                            } else {
-                                alert('Failed to update loan status');
-                            }
-                        });
-                }
-            });
-        });
-
-        // Show payment history
-        document.querySelectorAll('.action-btn.dismiss').forEach(button => {
-            button.addEventListener('click', function () {
-                const loanId = this.closest('tr').dataset.loanId;
-
-                fetch('fetch_payment_history.php', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ loan_id: loanId })
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            const modal = document.getElementById('payment-history-modal');
-                            const content = document.getElementById('payment-history-content');
-                            content.innerHTML = '';
-
-                            data.payments.forEach(payment => {
-                                const row = `<tr><td>${payment.date}</td><td>ZMW${payment.amount}</td></tr>`;
-                                content.innerHTML += row;
-                            });
-
-                            modal.style.display = 'block';
-                        } else {
-                            alert('No payment history found');
-                        }
-                    });
-            });
-        });
-
-        // Close modal
-        document.getElementById('modal-close').addEventListener('click', function () {
-            document.getElementById('payment-history-modal').style.display = 'none';
-        });
-    </script>
+    </main>
 </body>
 
 </html>

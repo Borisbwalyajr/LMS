@@ -234,67 +234,76 @@
                                 </div>
                             </div>
                             <div class="col-md-12">
-                                <div class="pay_text">
-                                    <p>You have to pay: ZMW <span id="repay"> 0</span></p>
-                                    <input type="hidden" id="hiddenCollateral" name="repayment">
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="submit_btn">
-                                    <button class="boxed-btn3" type="submit">Apply Now</button>
-                                </div>
-                            </div>
-                        </div>
-                        <script>
-                            // Copy the paragraph text to the hidden input before submission
-                            document.querySelector('form').addEventListener('submit', function () {
-                                const paragraphText = document.getElementById('repay').innerText;
-                                document.getElementById('hiddenCollateral').value = paragraphText;
-                            });
-
-                            function updateRepayment() {
-                                const loan = document.getElementById("loan").value;
-                                const week = document.getElementById("week").value;
-                                const repay = document.getElementById("repay");
-
-                                // Ensure both values are selected
-                                if (!loan || !week) {
-                                    repay.innerText = "0";
-                                    return;
-                                }
-
-                                const loanAmount = parseInt(loan, 10);
-                                const numOfWeeks = parseInt(week, 10);
-
-                                let totalRepayment;
-
-                                // Calculate repayment based on the selected week
-                                switch (numOfWeeks) {
-                                    case 1:
-                                        totalRepayment = loanAmount + 0.3 * loanAmount;
-                                        break;
-                                    case 2:
-                                        totalRepayment = loanAmount + 0.35 * loanAmount;
-                                        break;
-                                    case 3:
-                                        totalRepayment = loanAmount + 0.4 * loanAmount;
-                                        break;
-                                    case 4:
-                                        totalRepayment = loanAmount + 0.45 * loanAmount;
-                                        break;
-                                    default:
-                                        totalRepayment = 0;
-                                }
-
-                                // Update the repayment amount
-                                repay.innerText = totalRepayment.toFixed(2);
-                            }
-                        </script>
-                    </form>
-                </div>
-            </div>
-        </div>
+    <div class="pay_text">
+        <p id="paymentPrompt" style="display: none;">You have to pay: ZMW <span id="repay">0</span></p>
+        <input type="hidden" id="hiddenCollateral" name="repayment">
     </div>
+</div>
+<div id="paymentForm" class="col-md-12" style="display: none;">
+    <div class="submit_btn">
+        <button class="boxed-btn3" type="submit">Apply Now</button>
+    </div>
+</div>
+
+<script>
+    // Copy the repayment amount to the hidden input before form submission
+    document.querySelector('form').addEventListener('submit', function () {
+        const paragraphText = document.getElementById('repay').innerText;
+        document.getElementById('hiddenCollateral').value = paragraphText;
+    });
+
+    function updateRepayment() {
+        const loan = document.getElementById("loan").value;
+        const week = document.getElementById("week").value;
+        const repay = document.getElementById("repay");
+        const paymentPrompt = document.getElementById("paymentPrompt");
+        const paymentForm = document.getElementById("paymentForm");
+
+        // Ensure both values are selected
+        if (!loan || !week) {
+            repay.innerText = "0";
+            paymentPrompt.style.display = "none";
+            paymentForm.style.display = "none";
+            return;
+        }
+
+        const loanAmount = parseInt(loan, 10);
+        const numOfWeeks = parseInt(week, 10);
+
+        let totalRepayment;
+
+        // Calculate repayment based on the selected week
+        switch (numOfWeeks) {
+            case 1:
+                totalRepayment = loanAmount + 0.3 * loanAmount;
+                break;
+            case 2:
+                totalRepayment = loanAmount + 0.35 * loanAmount;
+                break;
+            case 3:
+                totalRepayment = loanAmount + 0.4 * loanAmount;
+                break;
+            case 4:
+                totalRepayment = loanAmount + 0.45 * loanAmount;
+                break;
+            default:
+                totalRepayment = 0;
+        }
+
+        // Update the repayment amount
+        repay.innerText = totalRepayment.toFixed(2);
+
+        // Show the payment prompt and form if repayment is greater than 0
+        if (totalRepayment > 0) {
+            paymentPrompt.style.display = "block";
+            paymentForm.style.display = "block";
+        } else {
+            paymentPrompt.style.display = "none";
+            paymentForm.style.display = "none";
+        }
+    }
+</script>
+
     <!--/ apply_form_area -->
     <!-- works_area_start  -->
     <div class="works_area" id="how">
@@ -339,8 +348,6 @@
             </div>
         </div>
     </div>
-
-
     <div class="apply_loan overlay">
         <div class="container">
             <div class="row align-items-center">
