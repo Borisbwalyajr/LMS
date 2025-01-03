@@ -1,19 +1,17 @@
 <?php
-    include "../connection.php";
-    session_start();
-    if(!isset($_SESSION['user_id']))
-    {
-        echo "<script>
-                alert('Your are curretly not logged in!');
-                window.location.href='../index.html';
-                </script>";
-    }
+include "../connection.php";
+session_start();
+if(!isset($_SESSION['user_id']))
+{
+    echo "<script>
+            alert('You are currently not logged in!');
+            window.location.href='../index.html';
+          </script>";
+    exit;  // Always ensure the script exits after redirection to prevent further execution
+}
 
-    $stmt = $pdo->prepare("SELECT * FROM registrations WHERE id_number = ?");
-    $stmt->execute([$_SESSION['user_id']]);
-
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
 ?>
+
 <!doctype html>
 <html class="no-js" lang="zxx">
 
@@ -182,47 +180,122 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-5 col-md-6">
-                        <div class="payment_form white-bg wow fadeInDown" data-wow-duration="1.2s" data-wow-delay=".2s">
-                            <div class="info text-center">
-                                <h4>How much do you want <?php echo $user["full_name"] ?>?</h4>
-                                <p>We provide instant cash loans with quick pay</p>
-                            </div>
-                            <div class="form">
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <div class="single_input">
-                                            <select class="wide" id="loan">
-                                                <option value="" disabled selected>Amount</option>
-                                                <option value="500">ZMW500</option>
-                                                <option value="1000">ZMW1000</option>
-                                                <option value="1500">ZMW1500</option>
-                                                <option value="2000">ZMW2000</option>
-                                                <option value="2500">ZMW2500</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-12">
-                                        <div class="single_input">
-                                            <select class="wide" id="week">
-                                                <option value="" disabled selected>Week</option>
-                                                <option value="1">1 Week</option>
-                                                <option value="2">2 Weeks</option>
-                                                <option value="3">3 Weeks</option>
-                                                <option value="4">4 Weeks</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <p>You have to pay: ZMW <span id="repay">0</span></p>
-                            <div class="submit_btn">
-                                <button class="boxed-btn3" onclick="calculate();">Calculate</button>
-                            </div>
-                            <br/>
-                            <div class="submit_btn">
-                                <button class="boxed-btn3" onclick="apply();">Apply Now</button>
-                            </div>
+                    <?php
+// Fetch logged-in user details
+$stmt = $pdo->prepare("SELECT * FROM registrations WHERE id_number = ?");
+$stmt->execute([$_SESSION['user_id']]);
+$user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+// Check if the user has an active loan with "credited" status
+$loanCheckStmt = $pdo->prepare("SELECT * FROM loan_applications WHERE nrc = ? AND status = 'credited'");
+$loanCheckStmt->execute([$user["id_number"]]);
+$activeLoan = $loanCheckStmt->fetch(PDO::FETCH_ASSOC);
+
+if ($activeLoan) {
+    // If the user has an outstanding loan
+    $outstandingBalance = $activeLoan['repayment'];
+    $dueDate = new DateTime($activeLoan['due_date']);
+    $today = new DateTime();
+    $overdueDays = $today->diff($dueDate)->days;
+    $amountOwed = $outstandingBalance + ($overdueDays * 5); // Assuming a charge of ZMW 5 per day overdue
+}
+?>
+
+<div class="col-lg-5 col-md-6">
+    <div class="payment_form white-bg wow fadeInDown" data-wow-duration="1.2s" data-wow-delay=".2s">
+        <div class="info text-center">
+            <h4>How much do you want <?php echo htmlspecialchars($user["full_name"]); ?>?</h4>
+            <p>We provide instant cash loans with quick pay</p>
+        </div>
+        <div class="form">
+            <?php if ($activeLoan): ?>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="single_input">
+                            <p>Outstanding Balance: ZMW <?php echo number_format($amountOwed, 2); ?></p>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="single_input">
+                            <p>Due Date: <?php echo $dueDate->format('Y-m-d'); ?></p>
+                        </div>
+                    </div>
+                </div>
+            <?php else: ?>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="single_input">
+                            <select class="wide" id="loan">
+                                <option value="" disabled selected>Amount</option>
+                                <option value="500">ZMW500</option>
+                                <option value="1000">ZMW1000</option>
+                                <option value="1500">ZMW1500</option>
+                                <option value="2000">ZMW2000</option>
+                                <option value="2500">ZMW2500</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="single_input">
+                            <select class="wide" id="week">
+                                <option value="" disabled selected>Week</option>
+                                <option value="1">1 Week</option>
+                                <option value="2">2 Weeks</option>
+                                <option value="3">3 Weeks</option>
+                                <option value="4">4 Weeks</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            <?php endif; ?>
+        </div>
+
+        <!-- Display repayment amount -->
+        <?php if ($activeLoan): ?>
+            <p>You have to pay: ZMW <span id="repay"><?php echo number_format($amountOwed, 2); ?></span></p>
+            <div class="submit_btn">
+                <button class="boxed-btn3" onclick="pay();">Pay Now</button>
+            </div>
+        <?php else: ?>
+            <p>You have to pay: ZMW <span id="repay">0</span></p>
+            <div class="submit_btn">
+                <button class="boxed-btn3" onclick="calculate();">Calculate</button>
+            </div>
+        <?php endif; ?>
+
+        <br/>
+        <div class="submit_btn">
+            <?php if (!$activeLoan): ?>
+                <button class="boxed-btn3" onclick="apply();">Apply Now</button>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Function to handle loan amount calculation (for users without an active loan)
+    function calculate() {
+        const loanAmount = document.getElementById("loan").value;
+        const weeks = document.getElementById("week").value;
+        const repayment = loanAmount * weeks * 0.1; // Example repayment formula (adjust as needed)
+        
+        // Display calculated repayment amount
+        document.getElementById("repay").innerText = repayment.toFixed(2);
+    }
+
+    // Function to handle loan payment (for users with an outstanding loan)
+    function pay() {
+        // Handle payment logic (this could be a form submission or redirect to a payment page)
+        window.location.href="repayment_page.php"
+    }
+
+    // Function to handle loan application submission (for users without an active loan)
+    function apply() {
+        // Perform form validation and submission logic here
+        alert("Loan application submitted! Wait for Approve in 5 minutes");
+
+    }
+</script>
 
                             <script>
                                 function apply(){
